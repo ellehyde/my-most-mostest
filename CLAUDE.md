@@ -109,8 +109,15 @@ find-and-replace in the raw HTML. The safe process:
   account), to move ownership off the work account. Apex DNS unchanged (account-agnostic IPs);
   `www` CNAME repointed to `ellehyde.github.io`. Pages, custom domain, and HTTPS all confirmed
   healthy post-transfer. This `CLAUDE.md` added.
-- **2026-07-13** — **Mobile header fix.** On narrow screens the nav links ("the story",
-  "say hello") wrapped to two ragged lines. Added `id="navMenu"`/`id="navCta"` to the nav and a
-  single `@media (max-width:600px)` block (in the template's 2nd `<style>`): links get
-  `white-space:nowrap` + spread evenly, and "get the book" drops to its own full-width row.
-  Desktop unchanged. (First-ever media query on the page — everything else uses fluid `clamp()`.)
+- **2026-07-13** — **Mobile header → hamburger menu.** (Iterated from an earlier same-day fix
+  that spread the links out and dropped the CTA to its own row.) On mobile (`@media
+  (max-width:600px)`, in the template's 2nd `<style>`) the three nav links now collapse into a
+  pure-CSS **hamburger menu** (checkbox-hack: hidden `#navToggle` + `#navBurger` label with 3
+  bars that animate to an X; `#navToggle:checked ~ #navMenu` reveals a dropdown panel). The
+  "get the book" button (`#navCta`) is hidden on mobile since the hero's hardcover/paperback
+  buttons are above the fold. Desktop keeps the inline links + CTA. Note: headless-Chrome
+  screenshots mis-composite the fixed nav's absolute dropdown over page content (looks like it
+  bleeds through) — it's a rendering artifact, not a real bug; verify on a real device.
+- **2026-07-13** — **Logo recolor (all viewports).** Header logo changed from "mostest" blue →
+  "**most**" blue + "mostest" black, matching the hero title and the book. Edits the logo
+  `<span>` directly (not in a media query), so it applies on every screen size.
