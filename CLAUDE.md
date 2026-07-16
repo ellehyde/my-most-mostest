@@ -79,6 +79,18 @@ There is also a local working copy at `~/Desktop/Claude Projects/my most mostest
     `retailers` (the `#retailers` section).
   - Retailer URLs themselves are unchanged (GA4 records the destination). To read: GA4 →
     Engagement → Events → `retailer_click`, broken down by `retailer`, for "which store wins".
+  - The three Amazon CTAs are all captured here and distinguished by `location` + `link_text`:
+    "get the book" (`header`), "get the paperback →" (`hero`), "or the hardcover" (`hero`,
+    the hardcover ASIN B0H15KS15S).
+- **`email_signup` / `contact_submit` conversions.** Fired inside the template component's
+  `subscribeList` / `sendContact` handlers, right before the success `setState` (so they only
+  fire on a real submit; `subscribeList` still early-returns on empty email → no event):
+  `gtag('event','email_signup',{location:'signup'})` and
+  `gtag('event','contact_submit',{location:'hello'})`.
+- **Custom dimensions to register (GA4 → Admin → Custom definitions → Create):** event-scoped,
+  so the parameters become usable in standard reports (going forward only): `Retailer`←`retailer`,
+  `Click location`←`location`, `Link text`←`link_text`. Without these, the events still count but
+  the parameter breakdowns only show in Realtime / DebugView.
 - **UTM convention (inbound links only).** For links Elle *shares* pointing back to the site:
   `https://mymostmostest.com/?utm_source=SOURCE&utm_medium=MEDIUM&utm_campaign=CAMPAIGN`
   (e.g. `?utm_source=instagram&utm_medium=social&utm_campaign=bio`). GA4 attributes these under
@@ -231,3 +243,10 @@ them, which is why we use a `/preview/` path instead.
   right labels + section `location`, non-retailer links stay silent). See the new Analytics
   section. Follow-ups for Elle: (1) GA4 Admin → Product links → link Search Console;
   (2) verify live via GA4 Realtime after deploy.
+- **2026-07-16** — **Analytics: added `email_signup` + `contact_submit` conversion events.** Wired
+  `gtag('event',...)` into the template's `subscribeList` / `sendContact` handlers at their success
+  `setState` (empty-email signup still no-ops → no event). The three Amazon CTAs were already
+  covered by `retailer_click` (distinguished via `location` + `link_text`). Verified by executing
+  the extracted handler bodies with stubbed `this`/`fetch`/`gtag` (events fire on submit, behavior
+  preserved, empty-email fires nothing). Documented the 3 custom dimensions to register
+  (`Retailer`, `Click location`, `Link text`).
