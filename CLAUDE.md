@@ -100,6 +100,17 @@ There is also a local working copy at `~/Desktop/Claude Projects/my most mostest
   `https://mymostmostest.com/?utm_source=SOURCE&utm_medium=MEDIUM&utm_campaign=CAMPAIGN`
   (e.g. `?utm_source=instagram&utm_medium=social&utm_campaign=bio`). GA4 attributes these under
   Acquisition. **Never** put UTMs on the retailer buttons — those stores ignore `utm_*`.
+- **Search Console → GA4 link.** The Search Console URL-prefix property (verified 2026-07-14, HTML
+  file `googlea86823cf66158b58.html`) is linked to GA4 via **Admin → Product links → Search Console
+  links**, and the auto-created **Search Console** collection is published to the Reports nav
+  (Queries + Google organic search traffic). Data appears ~48h after linking.
+- **Reports set up in GA4.** Custom **detail reports** "Retailer Clicks" (dim `Retailer`, filter
+  `event_name = retailer_click`) and "Buy buttons" (dim `Link text`, same filter), grouped in a
+  published **"Book dashboard"** collection in the left nav. `email_signup`/`contact_submit` are
+  marked **key events**.
+- **Companion tools (private claude.ai Artifacts, owned by Elle — URLs won't open for others):**
+  UTM Link Builder → https://claude.ai/code/artifact/81810286-199c-4093-9925-ea0f70f84181 ;
+  "Reading Your Analytics" cheat sheet → https://claude.ai/code/artifact/264156ac-c7d6-4ced-94f6-b4f43fb03308
 - **Privacy:** default measurement only, no PII. Running without a consent banner (common US
   practice); a lightweight EU/UK consent banner can be added later if desired (not built).
 
@@ -263,3 +274,10 @@ them, which is why we use a `/preview/` path instead.
   Removed all three 💛 yellow-heart emojis (signup confirmation, contact thank-you, contact
   blurb). Verified: form-swap/reset behavior via handler-eval, integrity (one `</script>`, zero
   hearts), and on a real device via `/preview/` before promoting to root.
+- **2026-07-23** — **Analytics: GA4 dashboard + Search Console + companion tools (no site change).**
+  Built the GA4 reporting layer: "Retailer Clicks" and "Buy buttons" detail reports in a published
+  "Book dashboard" collection, registered custom dimensions (Retailer / Click location / Link
+  text), marked `email_signup`/`contact_submit` as key events, and linked Search Console to GA4.
+  Created two private claude.ai Artifacts for Elle: a UTM Link Builder and a "Reading Your
+  Analytics" cheat sheet (links in the Analytics section). All dashboard/tooling work — no edits to
+  `index.html`.
