@@ -111,8 +111,11 @@ There is also a local working copy at `~/Desktop/Claude Projects/my most mostest
 - **Companion tools (private claude.ai Artifacts, owned by Elle — URLs won't open for others):**
   UTM Link Builder → https://claude.ai/code/artifact/81810286-199c-4093-9925-ea0f70f84181 ;
   "Reading Your Analytics" cheat sheet → https://claude.ai/code/artifact/264156ac-c7d6-4ced-94f6-b4f43fb03308
-- **Privacy:** default measurement only, no PII. Running without a consent banner (common US
-  practice); a lightweight EU/UK consent banner can be added later if desired (not built).
+- **Privacy:** default measurement only, no PII. **Privacy policy** lives at a standalone
+  `/privacy/` page (`privacy/index.html`, `noindex`), linked from the site footer. **No cookie
+  banner** — a US-audience book site doesn't require opt-in for standard analytics; revisit a
+  Consent Mode v2 banner if EU/UK traffic grows (decision documented 2026-07-23). If the newsletter
+  moves to MailerLite or ad cookies are ever added, update `/privacy/` accordingly.
 
 ---
 
@@ -281,3 +284,9 @@ them, which is why we use a `/preview/` path instead.
   Created two private claude.ai Artifacts for Elle: a UTM Link Builder and a "Reading Your
   Analytics" cheat sheet (links in the Analytics section). All dashboard/tooling work — no edits to
   `index.html`.
+- **2026-07-23** — **Privacy policy added.** New standalone `privacy/index.html` (served at
+  `/privacy/`, `noindex, follow`, brand-matched, light+dark) covering GA4/cookies, the FormSubmit
+  forms, third parties, no-sale-of-data, children's privacy, and opt-out. Added a **"Privacy
+  Policy"** footer link in the template (both root + `preview/`, via the decode/re-encode dance).
+  Decided against a cookie-consent banner for now (US audience; see Privacy bullet). Deployed
+  `/preview/` first, then root.
