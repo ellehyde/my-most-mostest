@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>About Us — My Most Mostest</title>
+  <meta name="description" content="Meet Brie Hollingsworth Krebs and Elle Harting, the author and illustrator behind My Most Mostest, and why they make books for small people.">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="author" content="Brie Hollingsworth Krebs">
+  <link rel="canonical" href="https://mymostmostest.com/about/">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/cover.jpg">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="My Most Mostest">
+  <meta property="og:title" content="About Us — My Most Mostest">
+  <meta property="og:description" content="Meet Brie Hollingsworth Krebs and Elle Harting, the author and illustrator behind My Most Mostest.">
+  <meta property="og:url" content="https://mymostmostest.com/about/">
+  <meta property="og:image" content="https://mymostmostest.com/og-cover.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:locale" content="en_US">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="About Us — My Most Mostest">
+  <meta name="twitter:description" content="Meet the author and illustrator behind My Most Mostest.">
+  <meta name="twitter:image" content="https://mymostmostest.com/og-cover.jpg">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <!-- Google Analytics 4 (gtag.js) - property G-Q11KK8BV23 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Q11KK8BV23"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-Q11KK8BV23');
+  </script>
+  <!-- Outbound retailer-click tracking: mirrors the listener on the home page -->
+  <script>
+  (function(){
+    var HOSTS=[{re:/(^|\.)amazon\./i,name:'Amazon',channel:'retail'},{re:/(^|\.)barnesandnoble\./i,name:'Barnes & Noble',channel:'retail'},{re:/(^|\.)bookshop\.org/i,name:'Bookshop.org',channel:'retail'},{re:/(^|\.)walmart\./i,name:'Walmart',channel:'retail'},{re:/(^|\.)TODOPUBLISHER\./i,name:'Publisher (direct)',channel:'direct'},{re:/(^|\.)saltwaterbookshop\./i,name:'Saltwater Bookshop',channel:'local'},{re:/(^|\.)eagleharborbooks\./i,name:'Eagle Harbor Book Co.',channel:'local'}];
+    function retailerFor(h){for(var i=0;i<HOSTS.length;i++){if(HOSTS[i].re.test(h))return HOSTS[i];}return null;}
+    function locFor(a){if(a.closest('nav'))return 'header';return 'about';}
+    document.addEventListener('click',function(e){
+      var a=e.target&&e.target.closest?e.target.closest('a[href]'):null;
+      if(!a||a.hasAttribute('data-ga-skip'))return;
+      var host;try{host=new URL(a.href).hostname;}catch(_){return;}
+      var r=retailerFor(host);
+      if(!r||typeof gtag!=='function')return;
+      gtag('event','retailer_click',{retailer:r.name,channel:r.channel,link_url:a.href,link_text:(a.textContent||'').trim().replace(/\s+/g,' ').slice(0,100),location:locFor(a)});
+    },true);
+  })();
+  </script>
+
+  <style>
+    :root {
+      --ground: #FBF8F0; --surface: #FFFDF7; --surface-2: #F1ECDF;
+      --ink: #33322E; --ink-soft: #6C6759; --line: #33322E; --line-soft: #DAD3C3;
+      --blue: #3E5EA6; --blue-ink: #2C4680; --yellow: #F3C63C; --shadow: #33322E;
+      --nav-bg: rgba(255,253,247,0.92);
+    }
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) {
+        --ground: #1A1D28; --surface: #242838; --surface-2: #2E3346;
+        --ink: #F2EFE6; --ink-soft: #A6ABBE; --line: #0E1017; --line-soft: #3C4258;
+        --blue: #8AA2DD; --blue-ink: #A9BCE8; --yellow: #E9C64C; --shadow: #0E1017;
+        --nav-bg: rgba(26,29,40,0.94);
+      }
+    }
+    :root[data-theme="dark"] {
+      --ground: #1A1D28; --surface: #242838; --surface-2: #2E3346;
+      --ink: #F2EFE6; --ink-soft: #A6ABBE; --line: #0E1017; --line-soft: #3C4258;
+      --blue: #8AA2DD; --blue-ink: #A9BCE8; --yellow: #E9C64C; --shadow: #0E1017;
+      --nav-bg: rgba(26,29,40,0.94);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; background: var(--ground); color: var(--ink);
+      font-family: 'Nunito', ui-rounded, 'SF Pro Rounded', system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      line-height: 1.65; -webkit-font-smoothing: antialiased;
+    }
+    a { color: var(--blue-ink); }
+    a:focus-visible, button:focus-visible { outline: 3px solid var(--blue); outline-offset: 2px; border-radius: 3px; }
+
+    /* ---- site header (mirrors the home page nav) ---- */
+    nav {
+      position: sticky; top: 0; z-index: 50; display: flex; flex-wrap: wrap; align-items: center;
+      justify-content: space-between; gap: 6px 16px; padding: 9px clamp(16px, 4vw, 48px);
+      background: var(--nav-bg); backdrop-filter: blur(8px); border-bottom: 2px solid var(--line);
+    }
+    .logo { font-family: 'Fredoka', ui-rounded, system-ui, sans-serif; font-size: 23px; font-weight: 600; color: var(--ink); text-decoration: none; letter-spacing: .3px; }
+    .logo .most { color: var(--blue); }
+    #navToggle { display: none; }
+    #navBurger { display: none; flex-direction: column; justify-content: space-between; width: 28px; height: 20px; cursor: pointer; }
+    #navBurger span { display: block; width: 100%; height: 3px; background: var(--ink); border-radius: 2px; transition: transform .25s ease, opacity .2s ease; }
+    #navMenu { display: flex; align-items: center; gap: clamp(14px, 2.6vw, 32px); }
+    #navMenu > a { white-space: nowrap; font-family: 'Fredoka', ui-rounded, system-ui, sans-serif; font-size: 16px; font-weight: 500; color: var(--ink); text-decoration: none; }
+    #navMenu > a:hover { color: var(--blue); }
+    #navMenu > a[aria-current="page"] { color: var(--blue); text-decoration: underline; text-underline-offset: 5px; }
+    #navStory { display: none; }
+    #navCta { font-weight: 600; color: #FFFDF7; background: var(--blue); padding: 9px 18px; border-radius: 999px; border: 2px solid var(--line); box-shadow: 3px 3px 0 var(--shadow); }
+    #navCta:hover { color: #FFFDF7; }
+    @media (max-width: 600px) {
+      #navBurger { display: flex; }
+      #navCta { display: none !important; }
+      #navStory { display: block !important; }
+      #navMenu {
+        display: none !important; position: absolute; top: 100%; left: 0; right: 0; flex-direction: column;
+        align-items: center; gap: 2px; background: var(--nav-bg); backdrop-filter: blur(8px);
+        border-bottom: 2px solid var(--line); padding: 8px clamp(16px, 4vw, 48px) 16px;
+      }
+      #navToggle:checked ~ #navMenu { display: flex !important; }
+      #navMenu > a { width: 100%; text-align: center; padding: 12px 0; font-size: 17px; }
+      #navToggle:checked ~ #navBurger span:nth-child(1) { transform: translateY(8.5px) rotate(45deg); }
+      #navToggle:checked ~ #navBurger span:nth-child(2) { opacity: 0; }
+      #navToggle:checked ~ #navBurger span:nth-child(3) { transform: translateY(-8.5px) rotate(-45deg); }
+    }
+
+    /* ---- page ---- */
+    .wrap { max-width: 940px; margin: 0 auto; padding: 40px 22px 8px; }
+    .badge {
+      display: inline-block; font-family: 'Fredoka', ui-rounded, system-ui, sans-serif; background: var(--yellow);
+      color: #33322E; padding: 6px 15px; border-radius: 999px; border: 2px solid #33322E; font-weight: 600;
+      font-size: 14px; transform: rotate(-2deg); box-shadow: 3px 3px 0 #33322E; margin-bottom: 18px;
+    }
+    h1 { font-family: 'Fredoka', ui-rounded, system-ui, sans-serif; font-size: clamp(34px, 6.5vw, 54px); font-weight: 600; line-height: 1.05; margin: 0 0 10px; text-wrap: balance; }
+    h1 .most { color: var(--blue); }
+    .intro { font-size: 18px; color: var(--ink-soft); margin: 0 0 30px; max-width: 60ch; }
+
+    .hero-photo { margin: 0 0 44px; }
+    .hero-photo img { width: 100%; max-height: 460px; object-fit: cover; display: block; border: 3px solid var(--line); border-radius: 22px; box-shadow: 6px 6px 0 var(--shadow); }
+    .hero-photo figcaption { font-size: 15px; color: var(--ink-soft); margin-top: 10px; text-align: center; }
+
+    .people { display: flex; flex-wrap: wrap; gap: 24px; }
+    /* flex column + margin-top:auto on the button keeps both cards' CTAs on one line
+       even when the two blurbs are different lengths */
+    .person {
+      flex: 1 1 340px; background: var(--surface); border: 2px solid var(--line); border-radius: 22px;
+      box-shadow: 6px 6px 0 var(--shadow); padding: 26px;
+      display: flex; flex-direction: column; align-items: flex-start;
+    }
+    .person .portrait {
+      width: 132px; height: 132px; border-radius: 50%; border: 3px solid var(--line); overflow: hidden;
+      background: var(--surface-2); display: flex; align-items: center; justify-content: center; margin-bottom: 16px;
+      font-family: 'Fredoka', ui-rounded, system-ui, sans-serif; font-size: 40px; font-weight: 600; color: var(--blue);
+    }
+    .person .portrait img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .person h2 { font-family: 'Fredoka', ui-rounded, system-ui, sans-serif; font-size: 26px; font-weight: 600; margin: 0 0 2px; line-height: 1.15; }
+    .person .role { font-family: 'Fredoka', ui-rounded, system-ui, sans-serif; font-size: 15px; font-weight: 500; color: var(--blue); margin: 0 0 12px; }
+    .person p { font-size: 16.5px; margin: 0 0 16px; }
+    .ig {
+      margin-top: auto; display: inline-flex; align-items: center; gap: 9px; font-family: 'Fredoka', ui-rounded, system-ui, sans-serif;
+      font-weight: 600; font-size: 15px; color: var(--ink); text-decoration: none; background: var(--surface-2);
+      padding: 10px 18px; border-radius: 999px; border: 2px solid var(--line); box-shadow: 3px 3px 0 var(--shadow);
+    }
+    .ig:hover { background: var(--yellow); color: #33322E; }
+    .ig svg { width: 17px; height: 17px; flex: none; }
+
+    .mission {
+      background: var(--blue); color: #FFFDF7; border: 2px solid var(--line); border-radius: 22px;
+      box-shadow: 6px 6px 0 var(--shadow); padding: clamp(26px, 4vw, 40px); margin: 44px 0 8px;
+    }
+    .mission h2 { font-family: 'Fredoka', ui-rounded, system-ui, sans-serif; font-size: clamp(24px, 3.4vw, 32px); font-weight: 600; margin: 0 0 12px; }
+    .mission p { font-size: 17.5px; max-width: 62ch; margin: 0 0 12px; color: #EDEFF7; }
+    .mission .cta {
+      display: inline-block; margin-top: 10px; font-family: 'Fredoka', ui-rounded, system-ui, sans-serif;
+      font-weight: 600; font-size: 16px; color: #33322E; background: #FFFDF7; text-decoration: none;
+      padding: 12px 24px; border-radius: 999px; border: 2px solid #33322E; box-shadow: 4px 4px 0 rgba(51,50,46,.55);
+    }
+
+    footer.site { margin-top: 60px; background: #33322E; color: #FFFDF7; padding: clamp(36px, 5vw, 54px) clamp(18px, 5vw, 64px) 36px; }
+    footer.site .inner { max-width: 1080px; margin: 0 auto; display: flex; flex-wrap: wrap; gap: 14px 40px; align-items: center; justify-content: space-between; }
+    footer.site .mark { font-family: 'Fredoka', ui-rounded, system-ui, sans-serif; font-size: 26px; font-weight: 600; }
+    footer.site .mark span { color: #F3C63C; }
+    footer.site .meta { display: flex; flex-wrap: wrap; gap: 8px 24px; font-size: 15px; color: #c7c4bc; }
+    footer.site a { color: #c7c4bc; text-decoration: underline; }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a class="logo" href="/">my <span class="most">most</span> mostest</a>
+    <input type="checkbox" id="navToggle" aria-label="Toggle menu">
+    <label id="navBurger" for="navToggle" aria-label="Menu"><span></span><span></span><span></span></label>
+    <div id="navMenu">
+      <a href="/about/" aria-current="page">about</a>
+      <a href="/events/">events</a>
+      <a id="navStory" href="/#story">the story</a>
+      <a href="/#favorites">favorites</a>
+      <a href="/#hello">say hello</a>
+      <a id="navCta" href="https://www.amazon.com/Most-Mostest-Brie-Hollingsworth-Krebs/dp/B0H13DP6TN/" target="_blank" rel="noopener">get the book</a>
+    </div>
+  </nav>
+
+  <div class="wrap">
+    <span class="badge">the two of us</span>
+    <h1>about <span class="most">us</span></h1>
+    <p class="intro">
+      PLACEHOLDER - a line or two about the pair of you: how you met, how the book started, the short version
+      someone would read at a signing table.
+    </p>
+
+    <figure class="hero-photo">
+      <img src="/assets/about/together.jpg" alt="Brie Hollingsworth Krebs and Elle Harting" onerror="this.closest('figure').style.display='none'">
+      <figcaption>PLACEHOLDER caption - where this photo was taken.</figcaption>
+    </figure>
+
+    <div class="people">
+
+      <article class="person">
+        <div class="portrait" aria-hidden="true">B<img src="/assets/about/brie.jpg" alt="" onerror="this.remove()"></div>
+        <h2>Brie Hollingsworth Krebs</h2>
+        <p class="role">author</p>
+        <p>
+          PLACEHOLDER - Brie's blurb. Who she is, where she writes, what got her writing this one, and a small
+          human detail (the favorite thing that made it into the book).
+        </p>
+        <a class="ig" href="https://www.instagram.com/TODO-BRIE-HANDLE/" target="_blank" rel="noopener"
+           data-network="instagram" data-profile="brie">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.1" fill="currentColor" stroke="none"/></svg>
+          follow Brie
+        </a>
+      </article>
+
+      <article class="person">
+        <div class="portrait" aria-hidden="true">E<img src="/assets/about/elle.jpg" alt="" onerror="this.remove()"></div>
+        <h2>Elle Harting</h2>
+        <p class="role">illustrator</p>
+        <p>
+          PLACEHOLDER - Elle's blurb. How she draws, what she was going for with the macaroni rain, and a small
+          human detail of her own.
+        </p>
+        <a class="ig" href="https://www.instagram.com/TODO-ELLE-HANDLE/" target="_blank" rel="noopener"
+           data-network="instagram" data-profile="elle">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.1" fill="currentColor" stroke="none"/></svg>
+          follow Elle
+        </a>
+      </article>
+
+    </div>
+
+    <section class="mission">
+      <h2>what we're doing</h2>
+      <p>
+        PLACEHOLDER - the why. What you're making, who it's for, and what you hope happens at bedtime when
+        somebody's small person points at a page and says "that one's my mostest."
+      </p>
+      <p>
+        PLACEHOLDER - what's next: more books, more readings, where people can follow along.
+      </p>
+      <a class="cta" href="/events/">come to a reading &rarr;</a>
+    </section>
+  </div>
+
+  <footer class="site">
+    <div class="inner">
+      <div class="mark">my most <span>mostest</span></div>
+      <div class="meta">
+        <span>by Brie Hollingsworth Krebs · illustrated by Elle Harting</span>
+        <span>© 2026 mymostmostest.com</span>
+        <a href="/privacy/">Privacy Policy</a>
+      </div>
+    </div>
+  </footer>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "AboutPage",
+    "url": "https://mymostmostest.com/about/",
+    "name": "About Us - My Most Mostest",
+    "about": [
+      {
+        "@type": "Person",
+        "name": "Brie Hollingsworth Krebs",
+        "jobTitle": "Author",
+        "url": "https://mymostmostest.com/about/"
+      },
+      {
+        "@type": "Person",
+        "name": "Elle Harting",
+        "jobTitle": "Illustrator",
+        "url": "https://mymostmostest.com/about/"
+      }
+    ]
+  }
+  </script>
+
+  <script>
+  // Instagram clicks -> social_click
+  document.addEventListener('click', function (e) {
+    var a = e.target && e.target.closest ? e.target.closest('a[data-network]') : null;
+    if (!a || typeof gtag !== 'function') return;
+    gtag('event', 'social_click', {
+      network: a.getAttribute('data-network'),
+      profile: a.getAttribute('data-profile'),
+      link_url: a.href,
+      location: 'about'
+    });
+  }, true);
+
+  // Respect a saved theme toggle if one is ever added; harmless otherwise.
+  try {
+    var t = localStorage.getItem('theme');
+    if (t === 'dark' || t === 'light') document.documentElement.setAttribute('data-theme', t);
+  } catch (e) {}
+  </script>
+</body>
+</html>
