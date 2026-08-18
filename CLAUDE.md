@@ -21,16 +21,74 @@ The page is built from four `<script>` blocks:
 | Block | `type` | What it holds |
 |-------|--------|---------------|
 | Template | `__bundler/template` | The **page content** — a `text/x-dc` (React-like) component. This is where the visible text, layout, and the contact-form logic live. **Edit here for content/copy changes.** |
-| Assets | `__bundler/ext_resources` | All **images and fonts**, base64-encoded. |
-| Manifest | `__bundler/manifest` | Ties the template and assets together. |
+| Assets | `__bundler/manifest` | All **images and fonts**, base64-encoded (this is the ~10 MB block). Images are addressed by UUID, e.g. `<img src="712302f0-...">`. |
+| Index | `__bundler/ext_resources` | Small id→uuid map (`macA`, `macB`) used by `window.__resources`. |
 | Runtime | plain `<script>` (×2) | The bundler code that decodes the above and renders the page. Don't touch. |
 
 Other files:
+- `assets/stores/` — bookshop logos (`saltwater.png`, `eagle-harbor.png`), referenced by
+  **root-absolute path**, not baked into the bundle. New images should follow this pattern:
+  same domain, so `/assets/...` resolves, and swapping a photo never means re-encoding 10 MB.
+- `events/index.html`, `about/index.html` — standalone hand-written pages (see below).
 - `CNAME` — contains `mymostmostest.com`; tells GitHub Pages the custom domain.
 - `CLAUDE.md` — this file.
 
 There is also a local working copy at `~/Desktop/Claude Projects/my most mostest/` containing
 `index.html` and `My Most Mostest.html` (an earlier export). The deployed file is `index.html`.
+
+---
+
+## Standalone pages (`/events/`, `/about/`, `/privacy/`)
+
+Not everything lives in the bundle. Pages whose content changes often are **plain hand-written
+HTML** modeled on `privacy/index.html` — no decode/re-encode dance, edit and push. They carry
+their own copy of the site header/footer, the `gtag.js` snippet and the outbound-click listener
+(they are separate documents; without the snippet they record nothing), and they link Fredoka +
+Nunito from Google Fonts so the type matches the bundled home page.
+
+### `/events/` — readings
+- **The `EVENTS` array at the top of the page's inline script is the only thing you edit.**
+  Copy a block, change the fields. Past dates move themselves into "previously" automatically.
+- Fields: `date` (`YYYY-MM-DD` or `YYYY-MM-DDTHH:MM`), `dateText` (optional display override for
+  fuzzy dates like `'August 2026'`), `title`, `venue`, `city`, `url`, `urlIsProductPage`,
+  `image`, `blurb`.
+- **Upcoming events render as cards** (image, blurb, RSVP button — they have to sell a visit).
+  **Past events render as one-line rows** (date · linked venue) — they are proof it happened and
+  a credit to the venue; a wall of cards for things nobody can attend buries the live one.
+- Equal `date` values keep their array order (the sort is stable), so three events in the same
+  month display in the order listed.
+- **`urlIsProductPage`**: event links point at venues, not checkouts, so by default they are
+  excluded from `retailer_click` — otherwise a bookshop's homepage would inflate the local
+  buy numbers the signed-copies section is measured on. They still fire `event_link_click`.
+  Set `urlIsProductPage: true` only when a link goes straight to the book's buy page.
+- **Request-a-reading form** posts to the same FormSubmit `info@` endpoint as the contact form
+  (`_subject: 'reading request from mymostmostest.com'`) and fires `reading_request`.
+
+### `/about/` — bios
+Sisters intro, two bio cards, one shared `@mymostmostest` Instagram button (fires `social_click`),
+and a "what we're doing" block. Portraits live at `/assets/about/{together,brie,elle}.jpg`;
+**missing images degrade gracefully** (the joint photo's `<figure>` hides itself, portraits fall
+back to an initial), so the page is safe to ship before the photos exist.
+
+---
+
+## Building the bundled home page
+
+Home-page edits go through a build script rather than hand-editing the base64. It decodes the
+template, applies a list of **exact string replacements** (each asserted to match exactly once),
+re-encodes with `json.dumps(tpl).replace('<', '\\u003c')`, and refuses to write unless the
+template region contains exactly one `</script>` and round-trips cleanly.
+
+- It always builds from a **frozen copy of the deployed file**, so re-running is idempotent and
+  never double-inserts.
+- One script emits **both** `index.html` (`index, follow`) and `preview/index.html`
+  (`noindex, nofollow`) from the same edit list, so root and preview cannot drift.
+- All buy URLs and store details sit in a single `C = {...}` config block at the top.
+- A `PAGES_LIVE` gate controls whether the nav links to `/about/` + `/events/` and the events
+  teaser are included — it let the buy sections ship while those pages were still placeholders.
+- Verification is a jsdom suite (rendered template + both standalone pages): section order,
+  tracking payloads, form behaviour, robots tags, and copy decisions that must not regress
+  (no "special edition" claim, scarcity stated once).
 
 ---
 
@@ -87,6 +145,16 @@ There is also a local working copy at `~/Desktop/Claude Projects/my most mostest
   - The three Amazon CTAs are all captured here and distinguished by `location` + `link_text`:
     "get the book" (`header`), "get the paperback →" (`hero`), "or the hardcover" (`hero`,
     the hardcover ASIN B0H15KS15S).
+- **`channel` parameter on `retailer_click`.** Every retailer link now also reports
+  `channel`: **`direct`** (IngramSpark, the publisher storefront - highest margin),
+  **`local`** (Saltwater Bookshop, Eagle Harbor Book Co. - signed copies), **`retail`**
+  (Amazon, B&N, Bookshop.org, Walmart). This is the field that answers "is the direct push
+  working". New `location` values: `direct`, `signed`, `events`, `about`.
+- **`data-ga-skip`.** Any anchor carrying this attribute is ignored by the click listener.
+  Used on event links so a venue page or a bookshop homepage is never counted as a sale click.
+- **`event_link_click`** `{event_title, link_url, location:'events'}` - fires on any event link.
+- **`reading_request`** `{location:'events'}` - the request-a-reading form on `/events/`.
+- **`social_click`** `{network:'instagram', profile:'mymostmostest', location:'about'}`.
 - **`email_signup` / `contact_submit` conversions.** Fired inside the template component's
   `subscribeList` / `sendContact` handlers, right before the success `setState` (so they only
   fire on a real submit; `subscribeList` still early-returns on empty email → no event):
@@ -94,7 +162,9 @@ There is also a local working copy at `~/Desktop/Claude Projects/my most mostest
   `gtag('event','contact_submit',{location:'hello'})`.
 - **Custom dimensions to register (GA4 → Admin → Custom definitions → Create):** event-scoped,
   so the parameters become usable in standard reports (going forward only): `Retailer`←`retailer`,
-  `Click location`←`location`, `Link text`←`link_text`. Without these, the events still count but
+  `Click location`←`location`, `Link text`←`link_text`. **Still to add: `Channel`←`channel`,
+  `Network`←`network`, `Event title`←`event_title`; mark `reading_request` a key event; add a
+  "Direct vs retail" detail report (dim `Channel`, filter `event_name = retailer_click`).** Without these, the events still count but
   the parameter breakdowns only show in Realtime / DebugView.
 - **UTM convention (inbound links only).** For links Elle *shares* pointing back to the site:
   `https://mymostmostest.com/?utm_source=SOURCE&utm_medium=MEDIUM&utm_campaign=CAMPAIGN`
@@ -301,3 +371,23 @@ them, which is why we use a `/preview/` path instead.
   promoting to root. To drop the info@ copy later, remove the MailerLite-adjacent FormSubmit line in
   `subscribeList`. MailerLite account owned by Elle; requires a valid postal address in the footer
   (CAN-SPAM) — using a PO box, not a home address.
+- **2026-08-18** — **Buy paths, events + about pages.** Three new ways to buy, two new pages, and
+  the tracking to tell them apart.
+  - **`#direct`** (blue, above `#signed`): buy straight from **IngramSpark**, the publisher, which
+    nets far more per copy than retail. Paperback primary / hardcover secondary, matching the hero.
+    **Note: IngramSpark was removed from the site on 2026-07-15 as a retailer; it is back
+    deliberately, as the direct channel. Do not strip it again.**
+  - **`#signed`** (warm cream section, white cards): signed copies at **Saltwater Bookshop**
+    (Kingston, WA) and **Eagle Harbor Book Co.** (Bainbridge Island, WA), logos in
+    `assets/stores/`. Both shops ship (verified on their storefronts before claiming it).
+  - **`#hello` moved** to sit directly above the footer; new **events teaser** strip after
+    `#favorites`; nav gains **about** + **events**, with "the story" kept mobile-only
+    (`#navStory`) and the hash links made root-absolute so the same nav works off-root.
+  - **`/events/`** and **`/about/`** added (see the Standalone pages section), indexed and added
+    to `sitemap.xml`. They shipped `noindex` first while the copy was still placeholder.
+  - **Analytics**: `channel` on `retailer_click`, plus `reading_request`, `social_click`,
+    `event_link_click` and the `data-ga-skip` guard. GA4 console follow-ups listed above.
+  - Fixed a nav-CTA contrast bug on the standalone pages: `#navMenu > a` (id + element)
+    out-specified `#navCta` (id only), so "get the book" rendered in the dark link colour.
+    Now `#navMenu > a#navCta`, with brand blue hard-coded because `var(--blue)` lightens in
+    dark mode and would fail contrast against cream text.

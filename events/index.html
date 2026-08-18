@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Readings &amp; Events — My Most Mostest</title>
   <meta name="description" content="Upcoming and past readings for My Most Mostest, the children's picture book by Brie Hollingsworth Krebs and Elle Harting. Request a reading for your school, library, or bookshop.">
-  <meta name="robots" content="noindex, nofollow">
+  <meta name="robots" content="index, follow">
   <meta name="author" content="Brie Hollingsworth Krebs">
   <link rel="canonical" href="https://mymostmostest.com/events/">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
@@ -39,7 +39,7 @@
   <!-- Outbound retailer-click tracking: mirrors the listener on the home page -->
   <script>
   (function(){
-    var HOSTS=[{re:/(^|\.)amazon\./i,name:'Amazon',channel:'retail'},{re:/(^|\.)barnesandnoble\./i,name:'Barnes & Noble',channel:'retail'},{re:/(^|\.)bookshop\.org/i,name:'Bookshop.org',channel:'retail'},{re:/(^|\.)walmart\./i,name:'Walmart',channel:'retail'},{re:/(^|\.)TODOPUBLISHER\./i,name:'Publisher (direct)',channel:'direct'},{re:/(^|\.)saltwaterbookshop\./i,name:'Saltwater Bookshop',channel:'local'},{re:/(^|\.)eagleharborbooks\./i,name:'Eagle Harbor Book Co.',channel:'local'}];
+    var HOSTS=[{re:/(^|\.)amazon\./i,name:'Amazon',channel:'retail'},{re:/(^|\.)barnesandnoble\./i,name:'Barnes & Noble',channel:'retail'},{re:/(^|\.)bookshop\.org/i,name:'Bookshop.org',channel:'retail'},{re:/(^|\.)walmart\./i,name:'Walmart',channel:'retail'},{re:/(^|\.)ingramspark\./i,name:'IngramSpark (direct)',channel:'direct'},{re:/(^|\.)saltwaterbookshop\./i,name:'Saltwater Bookshop',channel:'local'},{re:/(^|\.)eagleharborbooks\./i,name:'Eagle Harbor Book Co.',channel:'local'}];
     function retailerFor(h){for(var i=0;i<HOSTS.length;i++){if(HOSTS[i].re.test(h))return HOSTS[i];}return null;}
     function locFor(a){if(a.closest('nav'))return 'header';return 'events';}
     document.addEventListener('click',function(e){
@@ -105,11 +105,15 @@
     #navMenu > a:hover { color: var(--blue); }
     #navMenu > a[aria-current="page"] { color: var(--blue); text-decoration: underline; text-underline-offset: 5px; }
     #navStory { display: none; }
-    #navCta {
-      font-weight: 600; color: #FFFDF7; background: var(--blue); padding: 9px 18px;
+    /* selector must out-specify "#navMenu > a" above (id + element), or the CTA
+       inherits the dark link colour and the white-on-blue label goes unreadable.
+       Brand blue is hard-coded rather than var(--blue): in dark mode that token
+       lightens, and cream text on light blue fails contrast. */
+    #navMenu > a#navCta {
+      font-weight: 600; color: #FFFDF7; background: #3E5EA6; padding: 9px 18px;
       border-radius: 999px; border: 2px solid var(--line); box-shadow: 3px 3px 0 var(--shadow);
     }
-    #navCta:hover { color: #FFFDF7; }
+    #navMenu > a#navCta:hover { color: #FFFDF7; background: #33508F; }
     @media (max-width: 600px) {
       #navBurger { display: flex; }
       #navCta { display: none !important; }
@@ -157,11 +161,23 @@
     .event p.blurb { margin: 0 0 14px; font-size: 16.5px; }
     .event .cta {
       display: inline-block; font-family: 'Fredoka', ui-rounded, system-ui, sans-serif; font-weight: 600;
-      font-size: 15px; color: #FFFDF7; background: var(--blue); text-decoration: none; padding: 10px 20px;
+      font-size: 15px; color: #FFFDF7; background: #3E5EA6; text-decoration: none; padding: 10px 20px;
       border-radius: 999px; border: 2px solid var(--line); box-shadow: 3px 3px 0 var(--shadow);
     }
-    .event.past { opacity: .88; }
-    .event.past .when { color: var(--ink-soft); }
+    /* past events: compact rows, not cards */
+    .past-row {
+      display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 16px;
+      padding: 14px 4px; border-bottom: 1px solid var(--line-soft);
+    }
+    .past-row:first-child { border-top: 1px solid var(--line-soft); }
+    .pwhen {
+      font-family: 'Fredoka', ui-rounded, system-ui, sans-serif; font-weight: 600; font-size: 15px;
+      color: var(--ink-soft); flex: 0 0 auto; min-width: 190px;
+    }
+    .pvenue { font-size: 16.5px; }
+    .pvenue a { color: var(--blue-ink); text-underline-offset: 3px; }
+    .events.rows { gap: 0; }
+    @media (max-width: 520px) { .pwhen { min-width: 0; flex-basis: 100%; } }
     .empty { background: var(--surface-2); border: 2px dashed var(--line-soft); border-radius: 16px; padding: 20px; color: var(--ink-soft); margin: 0; }
     @media (max-width: 620px) {
       .event { flex-direction: column; }
@@ -238,10 +254,10 @@
     <ul class="events" id="upcomingList"></ul>
 
     <h2 id="previous">previously</h2>
-    <ul class="events" id="previousList"></ul>
+    <ul class="events rows" id="previousList"></ul>
 
     <section class="request" id="request">
-      <h2>want us to read at your place?</h2>
+      <h2>want us to do a reading?</h2>
       <p>
         schools, libraries, bookshops, story hours, birthday parties with unusually good snacks - we'd love to
         hear about it. tell us a little and we'll write back with what a visit looks like.
@@ -300,28 +316,48 @@
   <script>
   /* =========================================================================
      EVENTS - this is the only part you need to edit to add or update an event.
-     Copy one block, change the fields, done. Past dates move themselves down
-     into "previously" automatically.
+     Copy one block, change the fields, done. Once a date passes, that event
+     moves itself down into "previously" - you never have to re-file anything.
 
-       date   'YYYY-MM-DDTHH:MM'  when it starts (24-hour clock, local time)
-       title  what it is
-       venue  the place
-       city   city, state
-       url    link to the store's event page or RSVP (optional - '' for none)
-       image  '/assets/events/your-photo.jpg' (optional - '' for none)
-       blurb  a sentence or two (optional)
+       date      'YYYY-MM-DDTHH:MM'  when it starts (24-hour clock, local time).
+                 Drop the T-part ('2026-07-19') if the time isn't set yet.
+       dateText  optional. Overrides how the date is shown, for when you only
+                 remember the month: 'July 2026'. Sorting still uses `date`.
+       title     what it is. Upcoming events show it as a heading; past events
+                 don't need one (the venue and date carry it).
+       venue     the place
+       city      city, state
+       url       the shop's page - on past events this links the venue name,
+                 which is the whole point of listing them ('' for none)
+       urlIsProductPage  leave this off for normal venue links. Set it true only
+                 if `url` goes straight to the book's buy page, so the click is
+                 counted as a shop click in analytics
+       image     '/assets/events/your-photo.jpg' (optional, upcoming only)
+       blurb     a sentence or two (optional, upcoming only)
+
+     Adding the Barnes & Noble reading when it's ready to announce:
+       { date: '2026-09-13T10:30', title: 'storytime reading & signing',
+         venue: 'Barnes & Noble', city: 'Silverdale, WA',
+         url: 'https://...', image: '', blurb: '' }
      ========================================================================= */
   var EVENTS = [
+    // --- past readings. Same month, so these show in the order listed here:
+    //     the sort is stable, and equal dates keep their position. Reorder at will. ---
     {
-      date:  '2026-09-13T10:30',
-      title: 'PLACEHOLDER - Storytime reading & signing',
-      venue: 'Barnes & Noble',
-      city:  'TODO city, WA',
-      url:   '',
-      image: '',
-      blurb: 'Placeholder event - real details coming from Elle. Reading, a few questions, and signed copies afterwards.'
+      date: '2026-08-15', dateText: 'August 2026',
+      venue: 'Eagle Harbor Book Co.', city: 'Bainbridge Island, WA',
+      url: 'https://www.eagleharborbooks.com/'
+    },
+    {
+      date: '2026-08-15', dateText: 'August 2026',
+      venue: 'Saltwater Bookshop', city: 'Kingston, WA',
+      url: 'https://www.saltwaterbookshop.com/'
+    },
+    {
+      date: '2026-08-15', dateText: 'August 2026',
+      venue: 'Kingston Public Library', city: 'Kingston, WA',
+      url: 'https://www.krl.org/kingston'
     }
-    // , { date: '...', title: '...', venue: '...', city: '...', url: '', image: '', blurb: '' }
   ];
 
   (function () {
@@ -334,7 +370,15 @@
       });
     }
 
+    // Event links point at the venue ("we read here"), not at a checkout, so by default
+    // they are kept out of retailer_click - otherwise a shop's homepage would inflate the
+    // local buy numbers that the signed-copies section is measured on. Set
+    // urlIsProductPage: true if a link ever goes straight to the book's buy page.
+    // event_link_click fires either way, so the events report stays complete.
+    function gaSkip(ev) { return ev.urlIsProductPage ? '' : ' data-ga-skip'; }
+
     function when(ev) {
+      if (ev.dateText) return esc(ev.dateText);
       var d = new Date(ev.date);
       if (isNaN(d)) return esc(ev.date);
       var day = d.toLocaleDateString('en-US', fmtDay);
@@ -342,19 +386,37 @@
       return hasTime ? day + ' · ' + d.toLocaleTimeString('en-US', fmtTime).toLowerCase() : day;
     }
 
+    // Upcoming events are cards - they have to sell a visit. Past events are one-line
+    // rows: they exist as proof it happened and as a link back to the shop, and a wall
+    // of full cards for things you can no longer attend just buries the upcoming one.
     function card(ev, past) {
       var li = document.createElement('li');
-      li.className = 'event' + (past ? ' past' : '');
+      var venue = esc(ev.venue) + (ev.city ? ', ' + esc(ev.city) : '');
+
+      if (past) {
+        li.className = 'past-row';
+        li.innerHTML =
+          '<span class="pwhen">' + when(ev) + '</span>' +
+          '<span class="pvenue">' +
+            (ev.url
+              ? '<a href="' + esc(ev.url) + '" target="_blank" rel="noopener"' + gaSkip(ev) + ' ' +
+                'data-event-title="' + esc(ev.title || ev.venue) + '">' + venue + '</a>'
+              : venue) +
+          '</span>';
+        return li;
+      }
+
+      li.className = 'event';
       var html = '';
-      if (ev.image) html += '<img src="' + esc(ev.image) + '" alt="' + esc(ev.title) + '" loading="lazy">';
+      if (ev.image) html += '<img src="' + esc(ev.image) + '" alt="' + esc(ev.title || ev.venue) + '" loading="lazy">';
       html += '<div class="body">';
       html += '<p class="when">' + when(ev) + '</p>';
-      html += '<h3>' + esc(ev.title) + '</h3>';
+      if (ev.title) html += '<h3>' + esc(ev.title) + '</h3>';
       html += '<p class="where">' + esc(ev.venue) + (ev.city ? ' · ' + esc(ev.city) : '') + '</p>';
       if (ev.blurb) html += '<p class="blurb">' + esc(ev.blurb) + '</p>';
-      if (ev.url && !past) {
-        html += '<a class="cta" href="' + esc(ev.url) + '" target="_blank" rel="noopener" data-ga-skip ' +
-                'data-event-title="' + esc(ev.title) + '">details &amp; directions &rarr;</a>';
+      if (ev.url) {
+        html += '<a class="cta" href="' + esc(ev.url) + '" target="_blank" rel="noopener"' + gaSkip(ev) + ' ' +
+                'data-event-title="' + esc(ev.title || ev.venue) + '">details &amp; directions &rarr;</a>';
       }
       html += '</div>';
       li.innerHTML = html;
@@ -382,8 +444,9 @@
     }
 
     fill(document.getElementById('upcomingList'), upcoming, false,
-      'nothing on the calendar this minute - <a href="#request">ask us to come read</a>, or ' +
-      '<a href="/#signup">get on the list</a> and we\'ll tell you when something lands.');
+      'nothing announced just yet - but there is one in the works. ' +
+      '<a href="/#signup">get on the list</a> and you will hear about it first, or ' +
+      '<a href="#request">invite us to hang out and do a reading</a>.');
     fill(document.getElementById('previousList'), previous, true,
       'our first reading is still ahead of us. check back soon.');
 
