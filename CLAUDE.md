@@ -88,21 +88,35 @@ back to an initial), so the page is safe to ship before the photos exist.
 
 ## Building the bundled home page
 
-Home-page edits go through a build script rather than hand-editing the base64. It decodes the
+**The script lives at [`tools/build.py`](tools/build.py) — see [`tools/README.md`](tools/README.md)
+for usage, the recovery history, and the rules about `base-index.html`.**
+
+```
+python3 tools/build.py preview   # -> preview/index.html  (noindex, nofollow)
+python3 tools/build.py root      # -> index.html          (index, follow)
+```
+
+Home-page edits go through this script rather than hand-editing the base64. It decodes the
 template, applies a list of **exact string replacements** (each asserted to match exactly once),
 re-encodes with `json.dumps(tpl).replace('<', '\\u003c')`, and refuses to write unless the
 template region contains exactly one `</script>` and round-trips cleanly.
 
-- It always builds from a **frozen copy of the deployed file**, so re-running is idempotent and
-  never double-inserts.
+- It always builds from a **frozen copy of the deployed file** (`tools/base-index.html`), so
+  re-running is idempotent and never double-inserts. **Do not delete it, and do not re-freeze it
+  from current production** — the base is deliberately the pre-2026-08-18 state, because the
+  script applies the direct-buy/signed-copies edits on top of it.
 - One script emits **both** `index.html` (`index, follow`) and `preview/index.html`
   (`noindex, nofollow`) from the same edit list, so root and preview cannot drift.
 - All buy URLs and store details sit in a single `C = {...}` config block at the top.
 - A `PAGES_LIVE` gate controls whether the nav links to `/about/` + `/events/` and the events
   teaser are included — it let the buy sections ship while those pages were still placeholders.
-- Verification is a jsdom suite (rendered template + both standalone pages): section order,
-  tracking payloads, form behaviour, robots tags, and copy decisions that must not regress
-  (no "special edition" claim, scarcity stated once).
+- Bare `python3 tools/build.py` defaults to **preview**, so it can never overwrite root by accident.
+- ⚠️ **Verification is currently manual.** The jsdom suite this section used to describe
+  (`test-home.mjs`, `test-pages.mjs` — section order, tracking payloads, form behaviour, robots
+  tags, and copy guards like no "special edition" claim and scarcity stated once) was lost with
+  the script and had **no** history snapshots, so it could not be recovered. Until it is
+  rewritten, verify by hand and on a real device via `/preview/`. Rewriting it is the single
+  highest-value follow-up here; the 46-assertion suite pattern used for `/events/` is a good model.
 
 ---
 
@@ -428,3 +442,18 @@ them, which is why we use a `/preview/` path instead.
     right-edge clipping; use `Emulation.setDeviceMetricsOverride` for real mobile checks.
   - No home-page change: the `#comesayhi` teaser is generic copy plus a button and never names
     an event, so the bundle was untouched and `/preview/` was not involved.
+- **2026-09-08** — **Recovered the lost home-page build pipeline** (`tools/`). The `build.py` this
+  file has described since 2026-08-18 was never committed: it lived in a per-session `/private/tmp`
+  scratchpad that has since been deleted, and its `base-index.html` input was gone entirely, so for
+  ~3 weeks the home page was **un-editable by its documented process**. Recovered from Claude Code's
+  file-history cache (snapshot `@v17`, timestamp-matched to `f51d046`) and committed as
+  `tools/build.py` + `tools/base-index.html` + `tools/README.md`.
+  - `base-index.html` is `git show 6dc6bd5:index.html` — the state *before* the 2026-08-18
+    direct-buy/signed-copies work, since the script applies those edits. Identical content to the
+    blob already in history, so git dedupes it (`.git` stayed 59 MB).
+  - **Verified byte-for-byte:** from a fresh clone, `build.py preview` and `build.py root`
+    reproduce the deployed files exactly (sha256 match against `HEAD`), all assertions passing.
+  - One fix: `REPO` was a hard-coded `/Users/bluemac/...` path; now derived from the script's own
+    location so a clone works. Output verified unchanged.
+  - **Not recovered:** the jsdom suites (`test-home.mjs`, `test-pages.mjs`) had no snapshots.
+    Home-page verification is manual until they are rewritten.
