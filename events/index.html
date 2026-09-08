@@ -275,7 +275,7 @@
            onerror hides the figure, same as the portraits on /about/. -->
       <figure class="hero-photo">
         <img src="/assets/events/events-hero.jpg" width="835" height="1000"
-             alt="Holding up a copy of My Most Mostest at a bookshop reading"
+             alt="Elle Harting holding up a copy of My Most Mostest at a bookshop reading"
              onerror="this.closest('figure').style.display='none'">
       </figure>
     </div>
@@ -283,7 +283,7 @@
     <h2 id="upcoming">upcoming</h2>
     <ul class="events" id="upcomingList"></ul>
 
-    <h2 id="previous">previously</h2>
+    <h2 id="previous">previous</h2>
     <ul class="events rows" id="previousList"></ul>
 
     <section class="request" id="request">
@@ -347,7 +347,7 @@
   /* =========================================================================
      EVENTS - this is the only part you need to edit to add or update an event.
      Copy one block, change the fields, done. Once a date passes, that event
-     moves itself down into "previously" - you never have to re-file anything.
+     moves itself down into "previous" - you never have to re-file anything.
 
        date      'YYYY-MM-DDTHH:MM'  when it starts (24-hour clock, local time).
                  Drop the T-part ('2026-07-19') if the time isn't set yet.
@@ -373,7 +373,7 @@
      Keep the T-and-time on `date` whenever you know the time. A bare
      '2026-11-08' is read as UTC midnight, which is the evening *before* in
      Pacific time - so the event shows the wrong day and drops into
-     "previously" a day early. With a time it's read as local and behaves.
+     "previous" a day early. With a time it's read as local and behaves.
      If you only know the month, use `dateText` to cover the display.
      ========================================================================= */
   var EVENTS = [

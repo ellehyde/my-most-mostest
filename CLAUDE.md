@@ -48,15 +48,29 @@ Nunito from Google Fonts so the type matches the bundled home page.
 
 ### `/events/` — readings
 - **The `EVENTS` array at the top of the page's inline script is the only thing you edit.**
-  Copy a block, change the fields. Past dates move themselves into "previously" automatically.
+  Copy a block, change the fields. Past dates move themselves into "previous" automatically.
 - Fields: `date` (`YYYY-MM-DD` or `YYYY-MM-DDTHH:MM`), `dateText` (optional display override for
   fuzzy dates like `'August 2026'`), `title`, `venue`, `city`, `url`, `urlIsProductPage`,
   `image`, `blurb`.
+- **Always put the `T`-and-time on `date` when you know the time.** A date-only string
+  (`'2026-09-19'`) is parsed as **UTC** midnight per the JS spec, which is the evening *before*
+  in Pacific — so the card displays the wrong day and drops itself into "previous" a day early.
+  A date-*time* string is parsed as local and behaves. If you only know the month, `dateText`
+  covers the display (the existing August entries rely on exactly that).
 - **Upcoming events render as cards** (image, blurb, RSVP button — they have to sell a visit).
   **Past events render as one-line rows** (date · linked venue) — they are proof it happened and
   a credit to the venue; a wall of cards for things nobody can attend buries the live one.
 - Equal `date` values keep their array order (the sort is stable), so three events in the same
   month display in the order listed.
+- **Card images are cropped to 4:3 landscape** (`object-fit: cover`, 190px wide). A portrait
+  photo loses its top and bottom to a centre crop — faces included. Portrait shots belong in
+  the page hero (below), not the `image` field.
+- **Page hero:** `/assets/events/events-hero.jpg`, in a `<figure class="hero-photo">` beside the
+  `h1`. Shown uncropped at its natural aspect; the `<figure>` hides itself via `onerror` if the
+  file is missing. Untouched originals live in `assets/events/originals/` and are never linked.
+  Note the hero stacks `column-reverse` under 620px, and both flex children clear their
+  `flex-basis` there — basis follows the main axis, which is vertical once stacked, so the
+  desktop widths would otherwise pin heights and leave dead space under the intro.
 - **`urlIsProductPage`**: event links point at venues, not checkouts, so by default they are
   excluded from `retailer_click` — otherwise a bookshop's homepage would inflate the local
   buy numbers the signed-copies section is measured on. They still fire `event_link_click`.
@@ -391,3 +405,26 @@ them, which is why we use a `/preview/` path instead.
     out-specified `#navCta` (id only), so "get the book" rendered in the dark link colour.
     Now `#navMenu > a#navCta`, with brand blue hard-coded because `var(--blue)` lightens in
     dark mode and would fail contrast against cream text.
+- **2026-09-08** — **Barnes & Noble reading + events photo hero.** Added the Sept 19 2026,
+  11:00 AM storytime reading & signing at **Barnes & Noble, Silverdale (Kitsap Mall)** as the
+  first *upcoming* event, linking the store page (`stores.barnesandnoble.com/store/2281`) with
+  `urlIsProductPage` left off, so `data-ga-skip` keeps a directions click out of
+  `retailer_click` while `event_link_click` still fires.
+  - **New `/assets/events/` tree** — `events-hero.jpg` (835×1000, 272 KB) plus the untouched
+    4.3 MB original under `originals/`. Elle's photo is **portrait**, so it would have been
+    decapitated by the event card's 4:3 centre crop; it became a **page hero** beside the `h1`
+    instead, uncropped, with the `/about/`-style `onerror` figure-hide guard. See the
+    `/events/` section for the crop and mobile-stacking notes.
+  - **Documented the UTC date trap** in both `CLAUDE.md` and the page's own comment block: a
+    date-only `date` parses as UTC midnight, showing the wrong day in Pacific and self-archiving
+    a day early. The comment block's B&N placeholder became a generic event template.
+  - Renamed the past-events heading **"previously" → "previous"** (`id="previous"` unchanged;
+    nothing links to it). Replaced the upcoming empty-state copy, which promised "there is one
+    in the works" and would have gone stale on its own the morning after this reading.
+  - Verified with a 42-assertion jsdom suite (render, date formatting, `data-ga-skip`,
+    `event_link_click` vs `retailer_click` with a live-listener control), plus **CDP device
+    emulation** at 390/360px — note `--window-size` alone does *not* set the layout viewport
+    (Chrome floors it ~510px), so plain headless screenshots of this site show phantom
+    right-edge clipping; use `Emulation.setDeviceMetricsOverride` for real mobile checks.
+  - No home-page change: the `#comesayhi` teaser is generic copy plus a button and never names
+    an event, so the bundle was untouched and `/preview/` was not involved.
