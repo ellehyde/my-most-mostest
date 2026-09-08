@@ -1,0 +1,11 @@
+# Eleventy
+_site/
+.cache/
+
+# Node
+node_modules/
+npm-debug.log*
+.npm/
+
+# macOS
+.DS_Store
