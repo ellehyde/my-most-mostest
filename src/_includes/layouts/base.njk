@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+{# GA4 + the outbound-click listener. One copy, in the head, before anything
+   else - this is what /privacy/ was silently missing. #}
+<script async src="https://www.googletagmanager.com/gtag/js?id={{ site.analytics.measurementId }}"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', '{{ site.analytics.measurementId }}');
+</script>
+<script>{{ "js/analytics.js" | inlineFile | safe }}</script>
+
+<title>{{ pageTitle }}</title>
+<meta name="description" content="{{ pageDescription }}">
+<meta name="robots" content="{{ robots or env.robots }}">
+<meta name="author" content="{{ site.author }}">
+<link rel="canonical" href="{{ canonical | absoluteUrl }}">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/cover.jpg">
+
+<meta property="og:type" content="{{ ogType or 'website' }}">
+<meta property="og:site_name" content="{{ site.title }}">
+<meta property="og:title" content="{{ ogTitle or pageTitle }}">
+<meta property="og:description" content="{{ ogDescription or pageDescription }}">
+<meta property="og:url" content="{{ canonical | absoluteUrl }}">
+<meta property="og:image" content="https://mymostmostest.com/og-cover.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="My Most Mostest book cover - a blue umbrella in a rain of macaroni">
+<meta property="og:locale" content="en_US">
+{% if ogType == 'book' %}<meta property="book:author" content="{{ site.author }}">{% endif %}
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{{ ogTitle or pageTitle }}">
+<meta name="twitter:description" content="{{ ogDescription or pageDescription }}">
+<meta name="twitter:image" content="https://mymostmostest.com/og-cover.jpg">
+
+<link rel="preload" href="/assets/fonts/fredoka-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/nunito-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/css/site.css">
+{% if jsonld %}<script type="application/ld+json">{% include jsonld %}</script>{% endif %}
+</head>
+<body{% if gaLocation %} data-ga-location="{{ gaLocation }}"{% endif %}>
+
+{% include "partials/nav.njk" %}
+
+{{ content | safe }}
+
+{% include "partials/footer.njk" %}
+
+<script src="/js/site.js" defer></script>
+</body>
+</html>

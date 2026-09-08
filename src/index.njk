@@ -1,0 +1,164 @@
+---
+layout: layouts/base.njk
+permalink: /
+pageTitle: My Most Mostest - A Children's Book by Brie Hollingsworth Krebs
+pageDescription: A joyful rhyming picture book celebrating a child's very favorite things - by Brie Hollingsworth Krebs, illustrated by Elle Harting. In hardcover and paperback.
+canonical: /
+ogType: book
+ogTitle: My Most Mostest - a book of favorites
+jsonld: partials/jsonld-book.njk
+ogDescription: A joyful rhyming picture book celebrating a child's very favorite things, by Brie Hollingsworth Krebs and illustrated by Elle Harting.
+---
+{# gaLocation is deliberately unset here: on the home page `location` falls
+   through #retailers -> nav -> #buy -> section id, as it always has. #}
+
+<div id="top">
+
+<section id="buy" class="section section--rain section--cream hero">
+  <div class="rain" data-rain="hero" aria-hidden="true"></div>
+  <div class="wrap wrap--wide split hero-inner">
+    <div class="col">
+      <div class="badge">{{ home.hero.badge }}</div>
+      <h1 class="h-hero">my <span class="most">most</span><br>mostest</h1>
+      <p class="byline">{{ home.hero.byline | safe }}</p>
+      <div class="btn-row btn-row--hero">
+        <a class="btn btn--primary" href="{{ site.book.buy.amazon_paperback }}" target="_blank" rel="noopener">{{ home.hero.paperback_label }}</a>
+        <a class="btn btn--paper" href="{{ site.book.buy.amazon_hardcover }}" target="_blank" rel="noopener">{{ home.hero.hardcover_label }}</a>
+      </div>
+    </div>
+    <div class="col--media">
+      <div class="cover-shot">
+        {% image "/static/cover.jpg", home.hero.cover_alt, { widths: [430, 860], fallback: "jpeg", sizes: "(max-width: 700px) 90vw, 430px", loading: "eager", fetchpriority: "high" } %}
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="story" class="section section--blue">
+  <div class="wrap split">
+    <div class="col--media-sm">
+      <div class="story-frame">
+        {% image "/assets/home/story-bunny.png", home.story.image_alt, { widths: [200, 400], sizes: "200px" } %}
+      </div>
+    </div>
+    <div class="col">
+      <h2 class="h-section">{{ home.story.heading }}</h2>
+      <p class="lede">{{ home.story.paragraph_1 }}</p>
+      <p class="lede">{{ home.story.paragraph_2 | replace("<strong>", '<span class="pop">') | replace("</strong>", "</span>") | safe }}</p>
+    </div>
+  </div>
+</section>
+
+<section id="signup" class="section section--band section--yellow rule-top rule-bottom">
+  <div class="wrap wrap--narrow band-row">
+    <p class="strap">{{ home.signup.prompt }}</p>
+    <p class="form-thanks" id="signupThanks" hidden>{{ home.signup.thanks }}</p>
+    <div id="signupFormWrap" style="display:contents">
+      <form class="signup-form" data-form="signup" novalidate>
+        <label class="visually-hidden" for="signupEmail">{{ home.signup.placeholder }}</label>
+        <input type="email" id="signupEmail" name="email" required placeholder="{{ home.signup.placeholder }}">
+        <button type="submit">{{ home.signup.button }}</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<section id="favorites" class="section section--rain section--cream">
+  <div class="wrap wrap--wide">
+    <div class="section-head">
+      <h2 class="h-section">{{ home.favorites.heading }}</h2>
+      <p>{{ home.favorites.intro }}</p>
+    </div>
+    <div class="favorites-grid">
+      {% for f in home.favorites.images %}
+      <div class="favorite" style="--tilt:{{ f.tilt }};--fit:{{ f.fit }}">
+        {% image f.image, f.alt, { widths: [400, 800], sizes: "(max-width: 640px) 90vw, (max-width: 1024px) 45vw, 340px" } %}
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section id="comesayhi" class="section section--teaser section--cream rule-top rule-bottom">
+  <div class="wrap wrap--narrow band-row center">
+    <p class="strap">{{ home.comesayhi.text }}</p>
+    <a class="btn btn--primary btn--sm" href="/events/">{{ home.comesayhi.button }}</a>
+  </div>
+</section>
+
+<section id="direct" class="section section--blue rule-top" style="padding:clamp(52px,7vw,86px) clamp(18px,5vw,64px)">
+  <div class="wrap wrap--tight center">
+    <div class="badge badge--tight">{{ home.direct.badge }}</div>
+    <h2 class="h-band">{{ home.direct.heading }}</h2>
+    <p class="body-copy" style="margin:0 0 28px;color:var(--on-blue)">{{ home.direct.body }}</p>
+    <div class="btn-row btn-row--center">
+      <a class="btn btn--paper" href="{{ site.book.buy.ingram_paperback }}" target="_blank" rel="noopener">{{ home.direct.paperback_label }}</a>
+      <a class="btn btn--ghost" href="{{ site.book.buy.ingram_hardcover }}" target="_blank" rel="noopener">{{ home.direct.hardcover_label }}</a>
+    </div>
+    <p style="font-size:15px;line-height:1.6;margin:24px 0 0;color:var(--on-blue-quiet)">{{ home.direct.footnote }}</p>
+  </div>
+</section>
+
+<section id="signed" class="section section--sand rule-top" style="padding:clamp(48px,6.5vw,76px) clamp(18px,5vw,64px)">
+  <div class="wrap wrap--narrow center">
+    <div class="badge badge--right badge--tight">{{ home.signed.badge }}</div>
+    <h2 class="h-small">{{ home.signed.heading }}</h2>
+    <p class="body-copy" style="color:var(--ink-quiet);margin:0 auto 8px;max-width:620px">{{ home.signed.body }}</p>
+    <p class="body-copy" style="color:var(--ink-quiet);margin:0 auto 34px;max-width:620px">{{ home.signed.shipping_line }}</p>
+    <div class="shop-cards">
+      {% for shop in site.book.shops %}
+      <div class="shop-card">
+        <div class="shop-logo">
+          <img src="{{ shop.logo }}" alt="{{ shop.name }}" loading="lazy" style="max-width:{{ shop.logoMaxWidth }}">
+        </div>
+        <div class="shop-name">{{ shop.name }}<br><span class="shop-city">{{ shop.city }}</span></div>
+        <a class="btn btn--primary btn--sm" href="{{ shop.url }}" target="_blank" rel="noopener">{{ home.signed.button }}</a>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section id="retailers" class="section section--white rule-top" style="padding:clamp(44px,6vw,68px) clamp(18px,5vw,64px)">
+  <div class="wrap wrap--narrow center">
+    <p class="retailers-heading">{{ home.retailers.heading }}</p>
+    <div class="pill-row">
+      {% for r in site.book.retailers %}
+      <a class="pill" href="{{ r.url }}" target="_blank" rel="noopener"><span class="dot" style="--dot:{{ r.dot }}"></span>{{ r.name }}</a>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section id="hello" class="section section--rain section--yellow">
+  <div class="wrap split split--top">
+    <div class="col" style="flex-basis:360px">
+      <h2 class="h-section" style="margin-bottom:24px">{{ home.hello.heading }}</h2>
+      <div id="contactThanks" hidden>
+        <p class="contact-thanks">{{ home.hello.thanks }}</p>
+        <a class="btn btn--primary" id="contactAgain" href="#hello" role="button">{{ home.hello.again }}</a>
+      </div>
+      <div id="contactFormWrap">
+        <form class="contact-form" data-form="contact" novalidate>
+          <label class="visually-hidden" for="contactName">{{ home.hello.name_placeholder }}</label>
+          <input type="text" id="contactName" name="name" placeholder="{{ home.hello.name_placeholder }}">
+          <label class="visually-hidden" for="contactEmail">{{ home.hello.email_placeholder }}</label>
+          <input type="email" id="contactEmail" name="email" placeholder="{{ home.hello.email_placeholder }}">
+          <label class="visually-hidden" for="contactMessage">{{ home.hello.message_placeholder }}</label>
+          <textarea id="contactMessage" name="message" rows="5" placeholder="{{ home.hello.message_placeholder }}"></textarea>
+          <button class="btn btn--primary" type="submit">{{ home.hello.button }}</button>
+        </form>
+      </div>
+    </div>
+    <div class="col--aside">
+      <h3 class="h-aside">{{ home.hello.aside_heading }}</h3>
+      <a class="email-link" href="mailto:{{ site.email }}">
+        <span class="env" aria-hidden="true">✉</span>
+        {{ site.email }}
+      </a>
+      <p class="aside-note">{{ home.hello.aside_text }}</p>
+    </div>
+  </div>
+</section>
+
+</div>

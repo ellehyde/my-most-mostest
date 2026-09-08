@@ -1,0 +1,407 @@
+/* =========================================================================
+   my most mostest - one stylesheet for every page.
+
+   Replaces 125 inline style="" attributes and 30 style-hover/style-focus
+   attributes that used to live in the bundled home page, plus the three
+   near-identical <style> blocks the standalone pages each carried.
+
+   Design signature to preserve: 2-3px ink borders on everything, hard offset
+   shadows (no blur), pill buttons, small rotate() tilts, and a hover that
+   nudges up-left while the shadow grows.
+   ========================================================================= */
+
+/* ---- tokens ------------------------------------------------------------ */
+:root {
+  --ground: #FBF8F0;
+  --surface: #FFFDF7;
+  --surface-2: #F1ECDF;
+  --white: #FFFFFF;
+  --ink: #33322E;
+  --ink-soft: #6C6759;
+  --ink-muted: #7a776f;
+  --ink-body: #4a4842;
+  --ink-quiet: #5f5c55;
+  --line: #33322E;
+  --line-soft: #DAD3C3;
+  --blue: #3E5EA6;
+  --blue-hover: #33508F;
+  --blue-ink: #2C4680;
+  --yellow: #F3C63C;
+  --shadow: #33322E;
+  --nav-bg: rgba(255, 253, 247, 0.92);
+  --on-blue: #EDEFF7;
+  --on-blue-quiet: #CBD4EA;
+  --footer-quiet: #c7c4bc;
+
+  --radius-pill: 999px;
+  --radius-card: 22px;
+  --font-display: 'Fredoka', ui-rounded, system-ui, sans-serif;
+  --font-body: 'Nunito', ui-rounded, system-ui, sans-serif;
+}
+
+/* Self-hosted latin subsets, extracted from the old bundle. Only `latin` is
+   shipped: every non-ASCII glyph in the site's copy is either in this subset
+   or already falls back to a system font (the arrows and the envelope). */
+@font-face {
+  font-family: 'Fredoka';
+  font-style: normal;
+  font-weight: 400 700;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("/assets/fonts/fredoka-latin.woff2") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Nunito';
+  font-style: normal;
+  font-weight: 400 800;
+  font-display: swap;
+  src: url("/assets/fonts/nunito-latin.woff2") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* ---- base -------------------------------------------------------------- */
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  color: var(--ink);
+  background: var(--surface);
+  overflow-x: hidden;
+}
+
+a { color: var(--blue); }
+a:hover { color: var(--blue-hover); }
+
+input::placeholder,
+textarea::placeholder {
+  color: #9a978f;
+  font-family: var(--font-body);
+}
+
+img { max-width: 100%; }
+
+.visually-hidden {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+
+/* ---- nav (pure-CSS hamburger, checkbox hack) --------------------------- */
+.site-nav {
+  position: fixed; top: 0; left: 0; right: 0; min-height: 66px; z-index: 50;
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
+  gap: 6px 16px; padding: 9px clamp(16px, 4vw, 48px);
+  background: var(--nav-bg); backdrop-filter: blur(8px);
+  border-bottom: 2px solid var(--line);
+}
+.wordmark {
+  font-family: var(--font-display); font-size: 23px; font-weight: 600;
+  color: var(--ink); text-decoration: none; letter-spacing: .3px;
+}
+.wordmark .most { color: var(--blue); }
+#navToggle { display: none; }
+#navBurger {
+  display: none; flex-direction: column; justify-content: space-between;
+  width: 28px; height: 20px; cursor: pointer; padding: 0;
+}
+#navBurger span {
+  display: block; width: 100%; height: 3px; background: var(--ink);
+  border-radius: 2px; transition: transform .25s ease, opacity .2s ease;
+}
+#navMenu { display: flex; align-items: center; gap: clamp(14px, 2.6vw, 32px); }
+#navMenu > a {
+  white-space: nowrap; font-family: var(--font-display); font-size: 16px;
+  font-weight: 500; color: var(--ink); text-decoration: none;
+}
+#navMenu > a:hover { color: var(--blue); }
+#navMenu > a[aria-current="page"] {
+  color: var(--blue); text-decoration: underline; text-underline-offset: 5px;
+}
+#navStory { display: none; }
+/* Must out-specify "#navMenu > a" above (id + element) or the CTA inherits the
+   dark link colour and the cream label goes unreadable. Brand blue hard-coded
+   because a lightened blue would fail contrast against cream text. */
+#navMenu > a#navCta {
+  font-weight: 600; color: #FFFDF7; background: #3E5EA6; padding: 9px 18px;
+  border-radius: var(--radius-pill); border: 2px solid var(--line);
+  box-shadow: 3px 3px 0 var(--shadow);
+}
+#navMenu > a#navCta:hover { color: #FFFDF7; background: #33508F; }
+
+@media (max-width: 600px) {
+  #navBurger { display: flex; }
+  #navStory { display: block !important; }
+  #navCta { display: none !important; }
+  #navMenu {
+    display: none !important; position: absolute; top: 100%; left: 0; right: 0;
+    flex-direction: column; align-items: center; gap: 2px;
+    background: rgba(255, 253, 247, 0.98); backdrop-filter: blur(8px);
+    border-bottom: 2px solid var(--line); padding: 8px clamp(16px, 4vw, 48px) 16px;
+  }
+  #navToggle:checked ~ #navMenu { display: flex !important; }
+  #navMenu > a { width: 100%; text-align: center; padding: 12px 0; font-size: 17px; }
+  #navToggle:checked ~ #navBurger span:nth-child(1) { transform: translateY(8.5px) rotate(45deg); }
+  #navToggle:checked ~ #navBurger span:nth-child(2) { opacity: 0; }
+  #navToggle:checked ~ #navBurger span:nth-child(3) { transform: translateY(-8.5px) rotate(-45deg); }
+}
+
+/* ---- shared section furniture ----------------------------------------- */
+.section { padding: clamp(64px, 9vw, 110px) clamp(18px, 5vw, 64px); }
+.section--band { padding: clamp(26px, 4vw, 40px) clamp(18px, 5vw, 64px); }
+/* The events teaser is a slightly tighter band than the signup bar - they are
+   not interchangeable, and reusing --band here made the page 16px taller. */
+.section--teaser { padding: clamp(22px, 3.4vw, 32px) clamp(18px, 5vw, 64px); }
+/* ...and a slightly tighter gap than the signup bar, which shows as 2px once
+   the teaser wraps on narrow screens. */
+.section--teaser .band-row { gap: 12px 26px; }
+.section--rain { position: relative; overflow: hidden; }
+.section--cream { background: var(--surface); }
+.section--sand { background: var(--ground); }
+.section--white { background: var(--white); }
+.section--blue { background: var(--blue); color: var(--surface); }
+.section--yellow { background: var(--yellow); }
+.rule-top { border-top: 2px solid var(--line); }
+.rule-bottom { border-bottom: 2px solid var(--line); }
+
+.wrap { max-width: 1080px; margin: 0 auto; }
+.wrap--wide { max-width: 1120px; }
+.wrap--narrow { max-width: 900px; }
+.wrap--tight { max-width: 820px; }
+.center { text-align: center; }
+.split {
+  display: flex; flex-wrap: wrap; gap: clamp(28px, 5vw, 64px); align-items: center;
+}
+.split--top { align-items: flex-start; gap: clamp(32px, 6vw, 72px); }
+.col { flex: 1 1 340px; min-width: 0; }
+.col--media { flex: 1 1 320px; display: flex; justify-content: center; }
+.col--media-sm { flex: 1 1 240px; display: flex; justify-content: center; }
+.col--aside { flex: 1 1 280px; min-width: 0; }
+
+h1, h2, h3 { font-family: var(--font-display); font-weight: 600; }
+.h-hero {
+  font-size: clamp(46px, 7.5vw, 92px); line-height: .92;
+  margin: 0 0 20px; letter-spacing: -1.5px;
+}
+.h-hero .most { color: var(--blue); }
+.h-section { font-size: clamp(34px, 5vw, 58px); line-height: 1; margin: 0 0 22px; }
+.h-band { font-size: clamp(28px, 4.4vw, 44px); line-height: 1.1; margin: 0 0 16px; }
+.h-small { font-size: clamp(26px, 4vw, 40px); line-height: 1.15; margin: 0 0 14px; }
+.h-aside { font-size: clamp(22px, 3vw, 30px); margin: 0 0 18px; }
+
+.badge {
+  display: inline-block; font-family: var(--font-display); background: var(--yellow);
+  color: var(--ink); padding: 6px 15px; border-radius: var(--radius-pill);
+  border: 2px solid var(--line); font-weight: 600; font-size: 14px;
+  transform: rotate(-2deg); box-shadow: 3px 3px 0 var(--shadow);
+  /* 22px in the hero, 20px in the two band sections - these differ in the
+     original and the hero's shows up as a 22px height change once the layout
+     stacks on narrow screens. */
+  margin-bottom: 22px;
+}
+.badge--tight { margin-bottom: 20px; }
+.badge--right { transform: rotate(2deg); }
+
+.lede { font-size: clamp(18px, 2.1vw, 24px); line-height: 1.5; margin: 0 0 18px; }
+.lede:last-child { margin-bottom: 0; }
+.lede .pop { font-family: var(--font-display); font-weight: 600; color: var(--yellow); }
+.body-copy { font-size: clamp(16px, 1.9vw, 19px); line-height: 1.6; }
+.byline {
+  font-family: var(--font-display); font-size: 15px; font-weight: 500;
+  color: var(--ink-muted); margin: 0;
+}
+.strap {
+  font-family: var(--font-display); font-weight: 600;
+  font-size: clamp(17px, 2.1vw, 21px); line-height: 1.35; color: var(--ink); margin: 0;
+}
+
+/* ---- buttons ----------------------------------------------------------- */
+.btn {
+  display: inline-block; font-family: var(--font-display); font-weight: 600;
+  font-size: 17px; text-decoration: none; padding: 14px 26px;
+  border: 2px solid var(--line); border-radius: var(--radius-pill);
+  box-shadow: 4px 4px 0 var(--shadow); cursor: pointer;
+  transition: transform .12s ease, box-shadow .12s ease, background .12s ease;
+}
+.btn:hover { transform: translate(-1px, -1px); box-shadow: 5px 5px 0 var(--shadow); }
+.btn--primary { color: #FFFDF7; background: var(--blue); }
+.btn--primary:hover { color: #FFFDF7; background: var(--blue-hover); }
+.btn--paper { color: var(--ink); background: var(--surface); }
+.btn--paper:hover { color: var(--ink); background: var(--surface-2); }
+/* On the blue band: cream outline, ink shadow softened so it reads on blue. */
+.btn--ghost {
+  color: #FFFDF7; background: transparent; border-color: #FFFDF7;
+  box-shadow: 4px 4px 0 rgba(51, 50, 46, 0.55);
+}
+.btn--ghost:hover { color: #FFFDF7; background: rgba(255, 253, 247, .14); }
+.btn--sm { font-size: 16px; padding: 12px 22px; box-shadow: 3px 3px 0 var(--shadow); }
+.btn-row { display: flex; gap: 14px; flex-wrap: wrap; }
+.btn-row--center { justify-content: center; }
+.btn-row--hero { margin-top: 30px; }
+
+/* ---- hero -------------------------------------------------------------- */
+.hero { padding: 130px clamp(18px, 5vw, 64px) 90px; }
+.hero-inner { position: relative; z-index: 2; }
+.cover-shot {
+  width: min(430px, 100%); display: block; border: 3px solid var(--line);
+  box-shadow: 0 14px 32px rgba(51, 50, 46, .18); transform: rotate(-3deg);
+}
+.cover-shot img { display: block; width: 100%; height: auto; }
+
+/* ---- story ------------------------------------------------------------- */
+.story-frame {
+  width: min(360px, 100%); aspect-ratio: 1 / 1.05; background: var(--surface);
+  border: 3px solid var(--line); box-shadow: 12px 14px 0 rgba(0, 0, 0, .22);
+  transform: rotate(-2.5deg); display: flex; align-items: flex-end;
+  justify-content: flex-end; overflow: hidden;
+}
+.story-frame picture { width: 52%; display: block; margin: 0 6% 4% 0; }
+.story-frame img { width: 100%; height: auto; display: block; margin: 0; }
+.section--blue .lede { max-width: 34ch; }
+.section--blue .lede + .lede { max-width: 36ch; }
+
+/* ---- signup band ------------------------------------------------------- */
+.band-row {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: center;
+  gap: 14px 28px;
+}
+.band-row .strap { flex: 1 1 300px; min-width: 0; }
+.signup-form { display: flex; flex-wrap: wrap; gap: 10px; flex: 0 1 430px; }
+.signup-form input {
+  flex: 1 1 190px; min-width: 0; font-family: var(--font-body); font-size: 16px;
+  padding: 12px 16px; border: 2px solid var(--line); border-radius: var(--radius-pill);
+  background: var(--surface); color: var(--ink); outline: none;
+}
+.signup-form input:focus { border-color: var(--blue); }
+.signup-form button {
+  font-family: var(--font-display); font-weight: 600; font-size: 16px;
+  color: #FFFDF7; background: var(--blue); padding: 12px 24px;
+  border: 2px solid var(--line); border-radius: var(--radius-pill);
+  cursor: pointer; box-shadow: 3px 3px 0 var(--shadow); white-space: nowrap;
+}
+.signup-form button:hover { background: var(--blue-hover); }
+.form-thanks {
+  flex: 1 1 260px; font-family: var(--font-display); font-weight: 600;
+  font-size: 18px; color: var(--blue); margin: 0;
+}
+
+/* ---- favorites grid ---------------------------------------------------- */
+.section-head { text-align: center; margin-bottom: clamp(36px, 5vw, 60px); }
+.section-head .h-section { margin-bottom: 14px; }
+.section-head p {
+  font-size: clamp(17px, 2vw, 20px); line-height: 1.5; color: var(--ink-body);
+  max-width: 48ch; margin: 0 auto;
+}
+.favorites-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: clamp(22px, 3vw, 40px);
+}
+.favorite {
+  transform: rotate(var(--tilt, 0deg));
+  transition: transform .28s cubic-bezier(.22, 1, .36, 1);
+}
+.favorite:hover { transform: rotate(0deg) translateY(-10px) scale(1.03); }
+/* height:auto is required, not cosmetic: eleventy-img emits width/height
+   attributes for CLS, and without it the attribute height wins over
+   aspect-ratio and the squares render as tall rectangles. */
+.favorite img {
+  width: 100%; height: auto; aspect-ratio: 1 / 1; object-fit: var(--fit, contain);
+  background: var(--surface); display: block; border: 2px solid var(--line);
+  box-shadow: 8px 8px 0 rgba(51, 50, 46, .14);
+}
+
+/* ---- signed-copy cards ------------------------------------------------- */
+.shop-cards { display: flex; flex-wrap: wrap; justify-content: center; gap: 22px; }
+.shop-card {
+  flex: 1 1 300px; max-width: 390px; display: flex; flex-direction: column;
+  align-items: center; gap: 16px; background: var(--white);
+  border: 2px solid var(--line); border-radius: var(--radius-card);
+  box-shadow: 5px 5px 0 var(--shadow); padding: 28px 24px;
+}
+.shop-logo { height: 140px; display: flex; align-items: center; justify-content: center; }
+.shop-logo img { max-height: 140px; width: auto; height: auto; display: block; }
+.shop-name {
+  font-family: var(--font-display); font-weight: 600; font-size: 20px;
+  color: var(--ink); text-align: center; line-height: 1.25;
+}
+.shop-city {
+  font-family: var(--font-body); font-weight: 400; font-size: 15px; color: var(--ink-muted);
+}
+
+/* ---- retailer pills ---------------------------------------------------- */
+.pill-row { display: flex; flex-wrap: wrap; justify-content: center; gap: 14px; }
+.pill {
+  display: inline-flex; align-items: center; gap: 9px; font-family: var(--font-display);
+  font-size: 16px; font-weight: 600; color: var(--ink); text-decoration: none;
+  background: var(--surface); padding: 11px 20px; border-radius: var(--radius-pill);
+  border: 2px solid var(--line); box-shadow: 3px 3px 0 var(--shadow);
+}
+.pill:hover { color: var(--ink); background: #FFF3CF; }
+.pill .dot {
+  display: inline-block; flex: none; width: 11px; height: 11px; border-radius: 50%;
+  border: 1.5px solid var(--line); background: var(--dot, var(--ink));
+}
+.retailers-heading {
+  font-family: var(--font-display); font-weight: 600; font-size: clamp(19px, 2.6vw, 26px);
+  line-height: 1.3; color: var(--ink); margin: 0 0 30px;
+}
+
+/* ---- contact ----------------------------------------------------------- */
+.contact-form { display: flex; flex-direction: column; gap: 14px; max-width: 460px; }
+.contact-form input,
+.contact-form textarea {
+  font-family: var(--font-body); font-size: 17px; padding: 14px 16px;
+  border: 2px solid var(--line); border-radius: 10px; background: var(--surface);
+  color: var(--ink); outline: none;
+}
+.contact-form textarea { resize: vertical; }
+.contact-form input:focus,
+.contact-form textarea:focus { border-color: var(--blue); }
+.contact-form button { align-self: flex-start; padding: 14px 30px; }
+.contact-thanks {
+  font-family: var(--font-display); font-weight: 500; font-size: 19px;
+  color: var(--blue); margin: 0 0 20px;
+}
+.email-link {
+  display: inline-flex; align-items: center; gap: 10px; font-family: var(--font-display);
+  font-weight: 500; font-size: 19px; color: var(--blue); text-decoration: none;
+}
+.email-link:hover { color: var(--blue-hover); }
+.email-link .env {
+  display: inline-flex; width: 38px; height: 38px; align-items: center;
+  justify-content: center; background: var(--surface); border: 2px solid var(--line);
+  border-radius: 50%; font-size: 18px;
+}
+.aside-note {
+  font-size: 17px; line-height: 1.6; color: var(--ink-body); margin: 26px 0 0; max-width: 34ch;
+}
+
+/* ---- footer ------------------------------------------------------------ */
+.site-footer {
+  position: relative; background: var(--ink); color: var(--surface);
+  padding: clamp(48px, 6vw, 72px) clamp(18px, 5vw, 64px) 44px; overflow: hidden;
+}
+.site-footer .wrap {
+  position: relative; z-index: 2; display: flex; flex-wrap: wrap;
+  gap: 18px 40px; align-items: center; justify-content: space-between;
+}
+.footer-mark { font-family: var(--font-display); font-size: 26px; font-weight: 600; }
+.footer-mark .most { color: var(--yellow); }
+.footer-meta {
+  display: flex; flex-wrap: wrap; gap: 8px 24px; font-size: 15px; color: var(--footer-quiet);
+}
+.footer-meta a { color: var(--footer-quiet); text-decoration: underline; }
+
+/* ---- macaroni rain ----------------------------------------------------- */
+.rain { position: absolute; inset: 0; overflow: hidden; pointer-events: none; z-index: 0; }
+.rain img { position: absolute; top: -60px; opacity: .92; will-change: transform; }
+@keyframes macFall {
+  0%   { transform: translateY(-60px) translateX(0) rotate(0deg); }
+  30%  { transform: translateY(28vh) translateX(var(--sway)) rotate(calc(var(--rot) * 0.35)); }
+  62%  { transform: translateY(62vh) translateX(calc(var(--sway) * -0.8)) rotate(calc(var(--rot) * 0.72)); }
+  100% { transform: translateY(1000px) translateX(var(--drift)) rotate(var(--rot)); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .rain { display: none; }
+  .btn, .favorite { transition: none; }
+}

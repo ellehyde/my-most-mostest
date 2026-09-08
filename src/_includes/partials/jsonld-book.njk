@@ -1,0 +1,39 @@
+{%- set pb = site.book.isbn.paperback -%}
+{%- set offers = [] -%}
+{%- for r in site.book.retailers -%}
+{%- set offers = (offers.push({ "@type": "Offer", "availability": "https://schema.org/InStock", "url": r.url, "seller": { "@type": "Organization", "name": r.name } }), offers) -%}
+{%- endfor -%}
+{{- {
+  "@context": "https://schema.org",
+  "@type": "Book",
+  "name": site.title,
+  "alternateName": "My Most Mostest: A Book of Favorites",
+  "url": "https://mymostmostest.com/",
+  "image": "https://mymostmostest.com/cover.jpg",
+  "inLanguage": "en",
+  "genre": "Children's picture book",
+  "description": "My Most Mostest is a joyful rhyming picture book that celebrates all of a child's very favorite things - from soaring on the highest swing to snuggling up with a lovey. Written by Brie Hollingsworth Krebs and illustrated by Elle Harting. Available in hardcover and paperback.",
+  "author": { "@type": "Person", "name": site.author },
+  "illustrator": { "@type": "Person", "name": site.illustrator },
+  "audience": { "@type": "PeopleAudience", "suggestedMinAge": 2, "suggestedMaxAge": 7 },
+  "workExample": [
+    {
+      "@type": "Book",
+      "bookFormat": "https://schema.org/Paperback",
+      "inLanguage": "en",
+      "isbn": pb,
+      "gtin13": pb,
+      "offers": offers
+    },
+    {
+      "@type": "Book",
+      "bookFormat": "https://schema.org/Hardcover",
+      "inLanguage": "en",
+      "isbn": site.book.isbn.hardcover,
+      "gtin13": site.book.isbn.hardcover,
+      "offers": [
+        { "@type": "Offer", "availability": "https://schema.org/InStock", "url": site.book.buy.amazon_hardcover, "seller": { "@type": "Organization", "name": "Amazon" } }
+      ]
+    }
+  ]
+} | jsonld | safe -}}

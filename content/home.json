@@ -1,0 +1,66 @@
+{
+  "hero": {
+    "badge": "a book of favorites",
+    "byline": "by Brie Hollingsworth Krebs&nbsp;&nbsp;·&nbsp;&nbsp;illustrated by Elle Harting",
+    "paperback_label": "get the paperback →",
+    "hardcover_label": "or the hardcover",
+    "cover_alt": "My Most Mostest book cover"
+  },
+  "story": {
+    "heading": "the story",
+    "paragraph_1": "A playful and wacky take on big love and even bigger favorites from your toddler's point of view.",
+    "paragraph_2": "Share the silly, sweet and sticky things every kiddo loves the most, never forgetting their most mostest is <strong>YOU</strong>.",
+    "image_alt": "a bunny with a bowl of macaroni"
+  },
+  "signup": {
+    "prompt": "psst... want a heads-up when the next book lands? new releases, events, and the occasional happy dance.",
+    "placeholder": "your email",
+    "button": "count me in",
+    "thanks": "you’re on the list! a hello is on its way."
+  },
+  "favorites": {
+    "heading": "peek inside",
+    "intro": "a little peek at the mostest things inside. go on, poke around.",
+    "images": [
+      { "image": "/assets/home/favorites-01.png", "alt": "I could soar, I could roar on the highest swing", "tilt": "-2.5deg", "fit": "contain" },
+      { "image": "/assets/home/favorites-02.png", "alt": "then donkey rides on my bicycle", "tilt": "2deg", "fit": "contain" },
+      { "image": "/assets/home/favorites-03.png", "alt": "I could race in space on rocket ships with my wings", "tilt": "-1.5deg", "fit": "cover" },
+      { "image": "/assets/home/favorites-04.png", "alt": "snuggly lovin' on my lovey", "tilt": "2.5deg", "fit": "contain" },
+      { "image": "/assets/home/favorites-05.png", "alt": "silly and free outdoor pee pee", "tilt": "-2deg", "fit": "contain" },
+      { "image": "/assets/home/favorites-06.png", "alt": "because I looove getting messy and muddy", "tilt": "2deg", "fit": "contain" }
+    ]
+  },
+  "comesayhi": {
+    "text": "we started doing readings, come say hi in person.",
+    "button": "see upcoming events"
+  },
+  "direct": {
+    "badge": "the one that helps us most",
+    "heading": "want to support us directly?",
+    "body": "buying straight from our publisher sends more back to the two of us.",
+    "paperback_label": "get the paperback, direct →",
+    "hardcover_label": "or the hardcover, direct",
+    "footnote": "prefer one click? the usual shops are just below - a copy from anywhere is still a copy read at bedtime."
+  },
+  "signed": {
+    "badge": "limited",
+    "heading": "signed copies, on a real shelf",
+    "body": "we signed a stack at each of these shops when we read to little kids. support an independent bookshop, get a copy with a scribble.",
+    "shipping_line": "not nearby? they ship!",
+    "button": "buy a signed copy →"
+  },
+  "retailers": {
+    "heading": "also available at these very fine retailers, for your convenience"
+  },
+  "hello": {
+    "heading": "say hello",
+    "name_placeholder": "your name",
+    "email_placeholder": "your email",
+    "message_placeholder": "say something nice",
+    "button": "send it →",
+    "thanks": "thanks! your message is on its way - we'll be in touch.",
+    "again": "send another message",
+    "aside_heading": "or just email us",
+    "aside_text": "want to say hi? message us anytime - we're nice, we promise."
+  }
+}

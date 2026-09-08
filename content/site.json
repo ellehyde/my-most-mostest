@@ -1,0 +1,73 @@
+{
+  "title": "My Most Mostest",
+  "tagline": "a book of favorites",
+  "description": "A joyful rhyming picture book celebrating a child's very favorite things - by Brie Hollingsworth Krebs, illustrated by Elle Harting. In hardcover and paperback.",
+  "ogDescription": "A joyful rhyming picture book celebrating a child's very favorite things, by Brie Hollingsworth Krebs and illustrated by Elle Harting.",
+  "author": "Brie Hollingsworth Krebs",
+  "illustrator": "Elle Harting",
+  "email": "info@mymostmostest.com",
+  "instagram": "mymostmostest",
+  "copyrightYear": "2026",
+  "book": {
+    "isbn": {
+      "paperback": "9798295863783",
+      "hardcover": "9798295863806"
+    },
+    "buy": {
+      "amazon_paperback": "https://www.amazon.com/Most-Mostest-Brie-Hollingsworth-Krebs/dp/B0H13DP6TN/",
+      "amazon_hardcover": "https://www.amazon.com/Most-Mostest-Brie-Hollingsworth-Krebs/dp/B0H15KS15S/",
+      "ingram_paperback": "https://shop.ingramspark.com/b/084?params=lsBXSiQeXuNxgXtn8zwznFihprpzGvBZeFzuV7HSEVT",
+      "ingram_hardcover": "https://shop.ingramspark.com/b/084?params=P3pxhcsum0KOSjA4I9cG70FZr64LKUfw4KJVlyfLlVQ"
+    },
+    "retailers": [
+      {
+        "name": "Amazon",
+        "url": "https://www.amazon.com/Most-Mostest-Brie-Hollingsworth-Krebs/dp/B0H13DP6TN/",
+        "dot": "#FF9900"
+      },
+      {
+        "name": "Barnes & Noble",
+        "url": "https://www.barnesandnoble.com/w/my-most-mostest-brie-hollingsworth-krebs/1150125452?ean=9798295863783",
+        "dot": "#00704A"
+      },
+      {
+        "name": "Bookshop.org",
+        "url": "https://bookshop.org/p/books/my-most-mostest-brie-hollingsworth-krebs/05a41c4489e07e70?ean=9798295863783",
+        "dot": "#EB5E28"
+      },
+      {
+        "name": "Walmart",
+        "url": "https://www.walmart.com/ip/My-Most-Mostest-Paperback-9798295863783/20194464435",
+        "dot": "#0071DC"
+      }
+    ],
+    "shops": [
+      {
+        "name": "Saltwater Bookshop",
+        "city": "Kingston, WA",
+        "url": "https://www.saltwaterbookshop.com/item/YZZx9elY01IAMdyeLygezQ",
+        "logo": "/assets/stores/saltwater.png",
+        "logoMaxWidth": "240px"
+      },
+      {
+        "name": "Eagle Harbor Book Co.",
+        "city": "Bainbridge Island, WA",
+        "url": "https://www.eagleharborbooks.com/item/YZZx9elY01IAMdyeLygezQ",
+        "logo": "/assets/stores/eagle-harbor.png",
+        "logoMaxWidth": "230px"
+      }
+    ]
+  },
+  "forms": {
+    "formsubmit": "https://formsubmit.co/ajax/info@mymostmostest.com",
+    "mailerlite": "https://assets.mailerlite.com/jsonp/2529575/forms/193815162362267647/subscribe",
+    "subjects": {
+      "contact": "new hello from mymostmostest.com",
+      "signup": "new mailing-list signup",
+      "reading": "reading request from mymostmostest.com"
+    }
+  },
+  "analytics": {
+    "measurementId": "G-Q11KK8BV23"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "name": "my-most-mostest",
+  "version": "1.0.0",
+  "description": "mymostmostest.com - the landing page for the children's book My Most Mostest",
+  "license": "UNLICENSED",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "eleventy --serve",
+    "build": "eleventy",
+    "build:preview": "ELEVENTY_ENV=preview eleventy --pathprefix=/preview/",
+    "test": "node test/verify.mjs"
+  },
+  "devDependencies": {
+    "@11ty/eleventy": "^3.1.6",
+    "@11ty/eleventy-img": "^7.0.0",
+    "jsdom": "^30.0.1"
+  }
+}
