@@ -148,6 +148,15 @@
       font-size: 14px; transform: rotate(-2deg); box-shadow: 3px 3px 0 #33322E; margin-bottom: 18px;
     }
 
+    /* ---- hero ---- */
+    .hero { display: flex; gap: clamp(24px, 4vw, 44px); align-items: center; }
+    .hero-copy { flex: 1 1 340px; min-width: 0; }
+    .hero-photo { flex: 0 0 clamp(190px, 30%, 290px); margin: 0; }
+    .hero-photo img {
+      width: 100%; height: auto; display: block; border: 2px solid var(--line);
+      border-radius: 20px; box-shadow: 6px 6px 0 var(--shadow);
+    }
+
     .events { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 20px; }
     .event {
       display: flex; gap: 22px; background: var(--surface); border: 2px solid var(--line);
@@ -182,6 +191,16 @@
     @media (max-width: 620px) {
       .event { flex-direction: column; }
       .event img { width: 100%; }
+      /* column-reverse floats the photo above the heading (a tall portrait under a
+         short intro leaves the page bottom-heavy) while the DOM keeps the h1 first
+         for screen readers and crawlers. The cap stops it eating a whole screen. */
+      .hero { flex-direction: column-reverse; align-items: stretch; }
+      /* flex-basis follows the main axis, which is vertical once the hero stacks, so
+         the desktop bases (a width for .hero-photo, 340px for .hero-copy) would pin
+         HEIGHTS here - leaving dead space under the intro. Clear both and size the
+         photo on the cross axis instead, so auto margins can centre it. */
+      .hero-copy { flex: none; }
+      .hero-photo { flex: none; width: 100%; max-width: 260px; margin: 0 auto; }
     }
 
     /* ---- request a reading ---- */
@@ -243,12 +262,23 @@
   </nav>
 
   <div class="wrap">
-    <span class="badge">come say hi</span>
-    <h1>readings &amp; <span class="most">events</span></h1>
-    <p class="intro">
-      storytimes, signings, and the occasional wiggly crowd of two-year-olds. here's where we'll be next,
-      and where we've been.
-    </p>
+    <div class="hero">
+      <div class="hero-copy">
+        <span class="badge">come say hi</span>
+        <h1>readings &amp; <span class="most">events</span></h1>
+        <p class="intro">
+          storytimes, signings, and the occasional wiggly crowd of two-year-olds. here's where we'll be next,
+          and where we've been.
+        </p>
+      </div>
+      <!-- width/height match the file so the heading doesn't jump as it loads.
+           onerror hides the figure, same as the portraits on /about/. -->
+      <figure class="hero-photo">
+        <img src="/assets/events/events-hero.jpg" width="835" height="1000"
+             alt="Holding up a copy of My Most Mostest at a bookshop reading"
+             onerror="this.closest('figure').style.display='none'">
+      </figure>
+    </div>
 
     <h2 id="upcoming">upcoming</h2>
     <ul class="events" id="upcomingList"></ul>
@@ -335,12 +365,25 @@
        image     '/assets/events/your-photo.jpg' (optional, upcoming only)
        blurb     a sentence or two (optional, upcoming only)
 
-     Adding the Barnes & Noble reading when it's ready to announce:
-       { date: '2026-09-13T10:30', title: 'storytime reading & signing',
-         venue: 'Barnes & Noble', city: 'Silverdale, WA',
+     Template for a new upcoming event - copy this, fill it in, put it at the top:
+       { date: '2026-11-08T10:30', title: 'storytime reading & signing',
+         venue: 'Somewhere Books', city: 'Somewhere, WA',
          url: 'https://...', image: '', blurb: '' }
+
+     Keep the T-and-time on `date` whenever you know the time. A bare
+     '2026-11-08' is read as UTC midnight, which is the evening *before* in
+     Pacific time - so the event shows the wrong day and drops into
+     "previously" a day early. With a time it's read as local and behaves.
+     If you only know the month, use `dateText` to cover the display.
      ========================================================================= */
   var EVENTS = [
+    // --- upcoming ---
+    {
+      date: '2026-09-19T11:00', title: 'storytime reading & signing',
+      venue: 'Barnes & Noble', city: 'Silverdale, WA',
+      url: 'https://stores.barnesandnoble.com/store/2281',
+      blurb: "We'll read My Most Mostest out loud, then sign copies. Bring the kids, bring a friend, come say hi."
+    },
     // --- past readings. Same month, so these show in the order listed here:
     //     the sort is stable, and equal dates keep their position. Reorder at will. ---
     {
@@ -444,8 +487,8 @@
     }
 
     fill(document.getElementById('upcomingList'), upcoming, false,
-      'nothing announced just yet - but there is one in the works. ' +
-      '<a href="/#signup">get on the list</a> and you will hear about it first, or ' +
+      'nothing on the calendar right this minute. ' +
+      '<a href="/#signup">get on the list</a> and you will hear about the next one first, or ' +
       '<a href="#request">invite us to hang out and do a reading</a>.');
     fill(document.getElementById('previousList'), previous, true,
       'our first reading is still ahead of us. check back soon.');
