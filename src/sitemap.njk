@@ -1,0 +1,27 @@
+---
+permalink: /sitemap.xml
+eleventyExcludeFromCollections: true
+---
+{#- Only the three indexable pages. /privacy/ is noindex and /preview/ must
+    never appear here, or the staging copy competes with production. -#}
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://mymostmostest.com/</loc>
+    <lastmod>{{ ["src/index.njk","content/home.json","content/site.json"] | lastmod }}</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://mymostmostest.com/events/</loc>
+    <lastmod>{{ ["src/events.njk","content/events"] | lastmod }}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://mymostmostest.com/about/</loc>
+    <lastmod>{{ ["src/about.njk","content/about.json"] | lastmod }}</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+</urlset>

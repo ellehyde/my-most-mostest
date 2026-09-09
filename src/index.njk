@@ -82,7 +82,7 @@ ogDescription: A joyful rhyming picture book celebrating a child's very favorite
 <section id="comesayhi" class="section section--teaser section--cream rule-top rule-bottom">
   <div class="wrap wrap--narrow band-row center">
     <p class="strap">{{ home.comesayhi.text }}</p>
-    <a class="btn btn--primary btn--sm" href="/events/">{{ home.comesayhi.button }}</a>
+    <a class="btn btn--primary btn--sm" href="{{ '/events/' | url }}">{{ home.comesayhi.button }}</a>
   </div>
 </section>
 
@@ -109,7 +109,7 @@ ogDescription: A joyful rhyming picture book celebrating a child's very favorite
       {% for shop in site.book.shops %}
       <div class="shop-card">
         <div class="shop-logo">
-          <img src="{{ shop.logo }}" alt="{{ shop.name }}" loading="lazy" style="max-width:{{ shop.logoMaxWidth }}">
+          <img src="{{ shop.logo | url }}" alt="{{ shop.name }}" loading="lazy" style="max-width:{{ shop.logoMaxWidth }}">
         </div>
         <div class="shop-name">{{ shop.name }}<br><span class="shop-city">{{ shop.city }}</span></div>
         <a class="btn btn--primary btn--sm" href="{{ shop.url }}" target="_blank" rel="noopener">{{ home.signed.button }}</a>

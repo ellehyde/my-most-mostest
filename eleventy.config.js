@@ -1,8 +1,11 @@
 import { readFileSync } from "node:fs";
 import path from "node:path";
 import Image from "@11ty/eleventy-img";
+import { execFileSync } from "node:child_process";
 
 const IS_PREVIEW = process.env.ELEVENTY_ENV === "preview";
+// Mirrors the --pathprefix passed alongside ELEVENTY_ENV=preview.
+const PATH_PREFIX = IS_PREVIEW ? "/preview/" : "/";
 
 export default function (eleventyConfig) {
   // ---- passthrough -------------------------------------------------------
@@ -44,7 +47,7 @@ export default function (eleventyConfig) {
       // the WebP regardless; this only exists as a safety net.
       formats: ["webp", opts.fallback ?? "jpeg"],
       outputDir: "./_site/img/",
-      urlPath: "/img/",
+      urlPath: PATH_PREFIX + "img/",
       sharpWebpOptions: { quality: 82 },
     });
     return Image.generateHTML(metadata, {
@@ -65,6 +68,28 @@ export default function (eleventyConfig) {
     const base = "https://mymostmostest.com";
     if (!p) return base + "/";
     return p.startsWith("http") ? p : base + (p.startsWith("/") ? p : "/" + p);
+  });
+
+  // lastmod from git, not file mtime: a fresh clone (which is what CI has)
+  // gives every file the checkout time, which would claim every page changed
+  // on every build. Falls back to today if git history is unavailable.
+  const lastmodCache = new Map();
+  eleventyConfig.addFilter("lastmod", (paths) => {
+    const list = Array.isArray(paths) ? paths : [paths];
+    const key = list.join("|");
+    if (lastmodCache.has(key)) return lastmodCache.get(key);
+    let newest = "";
+    for (const p of list) {
+      try {
+        const out = execFileSync("git", ["log", "-1", "--format=%cs", "--", p], {
+          encoding: "utf8", stdio: ["ignore", "pipe", "ignore"],
+        }).trim();
+        if (out > newest) newest = out;
+      } catch { /* no git history (shallow clone, or not a repo) */ }
+    }
+    const val = newest || new Date().toISOString().slice(0, 10);
+    lastmodCache.set(key, val);
+    return val;
   });
 
   eleventyConfig.addFilter("jsonld", (obj) =>

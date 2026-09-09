@@ -22,7 +22,7 @@ bodyClass: page-body
     {# width/height match the file so the heading doesn't jump as it loads.
        onerror hides the figure, same as the portraits on /about/. #}
     <figure class="page-hero-photo">
-      <img src="/assets/events/events-hero.jpg" width="835" height="1000"
+      <img src="{{ '/assets/events/events-hero.jpg' | url }}" width="835" height="1000"
            alt="Elle Harting holding up a copy of My Most Mostest at a bookshop reading"
            onerror="this.closest('figure').style.display='none'">
     </figure>
@@ -97,4 +97,4 @@ bodyClass: page-body
   </section>
 </div>
 
-<script src="/js/events.js" defer></script>
+<script src="{{ '/js/events.js' | url }}" defer></script>

@@ -1,0 +1,297 @@
+# Pages CMS configuration - https://pagescms.org
+#
+# This is the admin Brie and Elle use at app.pagescms.org. It is the one file
+# collaborators cannot edit, so everything that must not be broken by accident
+# (the GA measurement id, the retailer host table, form endpoints, section ids,
+# meta tags, the privacy policy body) is deliberately NOT exposed here.
+#
+# Editing this file changes what the CMS shows. Editing content/ changes the site.
+
+media:
+  - name: events
+    label: Event photos
+    input: assets/events
+    output: /assets/events
+    categories: [image]
+    extensions: [jpg, jpeg, png, webp]
+    rename: safe
+  - name: home
+    label: Home page images
+    input: assets/home
+    output: /assets/home
+    categories: [image]
+    extensions: [jpg, jpeg, png, webp]
+    rename: safe
+  - name: about
+    label: About page photos
+    input: assets/about
+    output: /assets/about
+    categories: [image]
+    extensions: [jpg, jpeg, png, webp]
+    rename: safe
+
+settings:
+  commit:
+    # Put the editor's own name on their commits, so the history reads as an
+    # audit log rather than a wall of anonymous CMS entries.
+    identity: user
+    templates:
+      create: "Add {filename} (via Pages CMS)"
+      update: "Edit {path} (via Pages CMS)"
+      delete: "Remove {path} (via Pages CMS)"
+
+content:
+  # ---------------------------------------------------------------- events
+  - name: events
+    label: Events & readings
+    description: >-
+      Upcoming events show as cards. Once the date passes they move down into
+      "previous" on their own - you never have to re-file anything.
+    type: collection
+    path: content/events
+    format: json
+    filename: "{fields.date}-{fields.venue}.json"
+    view:
+      primary: venue
+      fields: [date, venue, city]
+      sort: [date, venue]
+      default:
+        sort: date
+        order: desc
+    fields:
+      - name: date
+        label: Date & start time
+        type: date
+        required: true
+        options:
+          time: true
+          format: "yyyy-MM-dd'T'HH:mm"
+        description: >-
+          Always pick a time if you know it. (A date with no time is read as UTC,
+          which is the evening before in Pacific - the picker avoids that.)
+      - name: dateText
+        label: Show the date as… (optional)
+        type: string
+        description: >-
+          Only if you want to override how it reads, e.g. "August 2026" for a
+          fuzzy date. Sorting still uses the real date above.
+      - name: title
+        label: What is it
+        type: string
+        description: 'e.g. "storytime reading & signing". Shown on upcoming cards.'
+      - name: venue
+        label: Venue
+        type: string
+        required: true
+      - name: city
+        label: City, state
+        type: string
+        description: 'e.g. "Silverdale, WA"'
+      - name: url
+        label: Link (the venue's page)
+        type: string
+        pattern:
+          regex: "^https?://.+"
+          message: Paste a full link starting with https://
+      - name: urlIsProductPage
+        label: This link goes straight to the book's buy page
+        type: boolean
+        default: false
+        description: >-
+          Leave this OFF for normal venue links. It keeps a click on "details &
+          directions" from being counted as a book sale in the analytics.
+      - name: image
+        label: Photo (optional)
+        type: image
+        options:
+          media: events
+        description: >-
+          Landscape works best - it is shown cropped to 4:3. A portrait photo
+          will lose its top and bottom, faces included.
+      - name: blurb
+        label: A sentence or two
+        type: text
+        options:
+          rows: 3
+        description: Shown on upcoming cards only, to sell the visit.
+      - name: order
+        label: Order among same-day events
+        type: number
+        description: >-
+          Only needed when two events share a date. Lower numbers show first.
+
+  # ------------------------------------------------------------- home page
+  - name: home
+    label: Home page
+    description: The words on the front page. Layout and colours are not editable here.
+    type: file
+    path: content/home.json
+    format: json
+    fields:
+      - name: hero
+        label: Top of page
+        type: object
+        fields:
+          - { name: badge, label: Little yellow badge, type: string }
+          - { name: byline, label: Byline under the title, type: string }
+          - { name: paperback_label, label: Paperback button text, type: string }
+          - { name: hardcover_label, label: Hardcover button text, type: string }
+          - { name: cover_alt, label: Cover image description (for screen readers), type: string }
+      - name: story
+        label: The story
+        type: object
+        fields:
+          - { name: heading, type: string }
+          - { name: paragraph_1, label: First paragraph, type: text }
+          - name: paragraph_2
+            label: Second paragraph
+            type: text
+            description: "Wrap a word in <strong>…</strong> to give it the yellow highlight."
+          - { name: image_alt, label: Illustration description, type: string }
+      - name: signup
+        label: Newsletter bar
+        type: object
+        fields:
+          - { name: prompt, type: text }
+          - { name: placeholder, label: Email box placeholder, type: string }
+          - { name: button, label: Button text, type: string }
+          - { name: thanks, label: Message after signing up, type: string }
+      - name: favorites
+        label: Peek inside
+        type: object
+        fields:
+          - { name: heading, type: string }
+          - { name: intro, type: text }
+          - name: images
+            label: The six spreads
+            type: object
+            list:
+              min: 6
+              max: 6
+            fields:
+              - { name: image, type: image, options: { media: home } }
+              - { name: alt, label: Description (for screen readers), type: string, required: true }
+              - { name: tilt, label: "Tilt, e.g. -2.5deg", type: string }
+              - { name: fit, label: "contain or cover", type: select, options: { values: [contain, cover] } }
+      - name: comesayhi
+        label: Events teaser
+        type: object
+        fields:
+          - { name: text, type: string }
+          - { name: button, label: Button text, type: string }
+      - name: direct
+        label: Buy direct
+        type: object
+        fields:
+          - { name: badge, type: string }
+          - { name: heading, type: string }
+          - { name: body, type: text }
+          - { name: paperback_label, type: string }
+          - { name: hardcover_label, type: string }
+          - { name: footnote, type: text }
+      - name: signed
+        label: Signed copies
+        type: object
+        fields:
+          - { name: badge, type: string }
+          - { name: heading, type: string }
+          - { name: body, type: text }
+          - { name: shipping_line, type: string }
+          - { name: button, label: Button text, type: string }
+      - name: retailers
+        label: Other retailers
+        type: object
+        fields:
+          - { name: heading, type: string }
+      - name: hello
+        label: Say hello
+        type: object
+        fields:
+          - { name: heading, type: string }
+          - { name: name_placeholder, type: string }
+          - { name: email_placeholder, type: string }
+          - { name: message_placeholder, type: string }
+          - { name: button, label: Button text, type: string }
+          - { name: thanks, label: Message after sending, type: string }
+          - { name: again, label: "\"Send another\" button text", type: string }
+          - { name: aside_heading, type: string }
+          - { name: aside_text, type: text }
+
+  # --------------------------------------------------------- book & links
+  - name: site
+    label: Book & buy links
+    description: >-
+      Change a link here and it updates everywhere at once - the header button,
+      the hero, the retailer pills and the data Google reads.
+    type: file
+    path: content/site.json
+    format: json
+    fields:
+      - name: book
+        label: The book
+        type: object
+        fields:
+          - name: isbn
+            label: ISBNs
+            type: object
+            fields:
+              - { name: paperback, type: string, readonly: true }
+              - { name: hardcover, type: string, readonly: true }
+          - name: buy
+            label: Main buy buttons
+            type: object
+            fields:
+              - { name: amazon_paperback, label: Amazon - paperback (header, hero, pill), type: string, required: true }
+              - { name: amazon_hardcover, label: Amazon - hardcover, type: string, required: true }
+              - { name: ingram_paperback, label: Buy direct - paperback, type: string, required: true }
+              - { name: ingram_hardcover, label: Buy direct - hardcover, type: string, required: true }
+          - name: retailers
+            label: "\"Also available at\" pills"
+            type: object
+            list: true
+            fields:
+              - { name: name, type: string }
+              - { name: url, type: string }
+              - { name: dot, label: "Dot colour, e.g. #FF9900", type: string }
+          - name: shops
+            label: Signed-copy bookshops
+            type: object
+            list: true
+            fields:
+              - { name: name, type: string }
+              - { name: city, type: string }
+              - { name: url, type: string }
+              - { name: logo, type: image, options: { media: home } }
+              - { name: logoMaxWidth, label: "Logo max width, e.g. 240px", type: string }
+      - { name: instagram, label: Instagram handle (no @), type: string }
+      - { name: email, label: Contact email, type: string, readonly: true }
+      - { name: copyrightYear, label: Footer copyright year, type: string }
+
+  # ------------------------------------------------------------ about page
+  - name: about
+    label: About page
+    type: file
+    path: content/about.json
+    format: json
+    fields:
+      - { name: badge, label: Little yellow badge, type: string }
+      - { name: intro, type: text }
+      - { name: together_photo, label: Photo of the two of you, type: image, options: { media: about } }
+      - { name: together_alt, label: Photo description (for screen readers), type: string }
+      - { name: together_caption, label: Caption under the photo, type: string }
+      - name: people
+        label: The two of you
+        type: object
+        list:
+          min: 2
+          max: 2
+        fields:
+          - { name: name, type: string }
+          - { name: role, label: "author / illustrator", type: string }
+          - { name: bio, type: text }
+          - { name: portrait, type: image, options: { media: about } }
+          - { name: initial, label: Letter shown if the photo is missing, type: string }
+      - { name: follow_heading, type: string }
+      - { name: mission_heading, type: string }
+      - { name: mission_body, type: text }
+      - { name: mission_cta, label: Button text, type: string }

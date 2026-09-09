@@ -20,8 +20,8 @@ gtag('config', '{{ site.analytics.measurementId }}');
 <meta name="robots" content="{{ robots or env.robots }}">
 <meta name="author" content="{{ site.author }}">
 <link rel="canonical" href="{{ canonical | absoluteUrl }}">
-<link rel="icon" href="/favicon.svg" type="image/svg+xml">
-<link rel="apple-touch-icon" href="/cover.jpg">
+<link rel="icon" href="{{ '/favicon.svg' | url }}" type="image/svg+xml">
+<link rel="apple-touch-icon" href="{{ '/cover.jpg' | url }}">
 
 <meta property="og:type" content="{{ ogType or 'website' }}">
 <meta property="og:site_name" content="{{ site.title }}">
@@ -39,15 +39,15 @@ gtag('config', '{{ site.analytics.measurementId }}');
 <meta name="twitter:description" content="{{ ogDescription or pageDescription }}">
 <meta name="twitter:image" content="https://mymostmostest.com/og-cover.jpg">
 
-<link rel="preload" href="/assets/fonts/fredoka-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="/assets/fonts/nunito-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="{{ '/assets/fonts/fredoka-latin.woff2' | url }}" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="{{ '/assets/fonts/nunito-latin.woff2' | url }}" as="font" type="font/woff2" crossorigin>
 <script>
 /* Honours a saved theme choice: localStorage.theme = 'dark' | 'light'.
    In the head, not at end-of-body, so dark-mode visitors never see a flash of
    light first. With no saved value the pages follow the OS setting. */
 try{var t=localStorage.getItem('theme');if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t);}catch(e){}
 </script>
-<link rel="stylesheet" href="/css/site.css">
+<link rel="stylesheet" href="{{ '/css/site.css' | url }}">
 {% if jsonld %}<script type="application/ld+json">{% include jsonld %}</script>{% endif %}
 </head>
 <body{% if bodyClass %} class="{{ bodyClass }}"{% endif %}{% if gaLocation %} data-ga-location="{{ gaLocation }}"{% endif %}>
@@ -58,6 +58,6 @@ try{var t=localStorage.getItem('theme');if(t==='dark'||t==='light')document.docu
 
 {% if chrome !== false %}{% include "partials/footer.njk" %}{% endif %}
 
-<script src="/js/site.js" defer></script>
+<script src="{{ '/js/site.js' | url }}" defer></script>
 </body>
 </html>

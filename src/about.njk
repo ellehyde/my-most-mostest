@@ -18,7 +18,7 @@ jsonld: partials/jsonld-about.njk
   {# missing images degrade gracefully: the figure hides itself, portraits
      fall back to an initial - the photos are not in the repo yet #}
   <figure class="about-photo">
-    <img src="{{ about.together_photo }}" alt="{{ about.together_alt }}"
+    <img src="{{ about.together_photo | url }}" alt="{{ about.together_alt }}"
          onerror="this.closest('figure').style.display='none'">
     <figcaption>{{ about.together_caption }}</figcaption>
   </figure>
@@ -26,7 +26,7 @@ jsonld: partials/jsonld-about.njk
   <div class="people">
     {%- for p in about.people %}
     <article class="person">
-      <div class="portrait" aria-hidden="true">{{ p.initial }}<img src="{{ p.portrait }}" alt="" onerror="this.remove()"></div>
+      <div class="portrait" aria-hidden="true">{{ p.initial }}<img src="{{ p.portrait | url }}" alt="" onerror="this.remove()"></div>
       <h2>{{ p.name }}</h2>
       <p class="role">{{ p.role }}</p>
       <p>{{ p.bio }}</p>
@@ -48,6 +48,6 @@ jsonld: partials/jsonld-about.njk
   <section class="mission">
     <h2>{{ about.mission_heading }}</h2>
     <p>{{ about.mission_body }}</p>
-    <a class="cta" href="/events/">{{ about.mission_cta }}</a>
+    <a class="cta" href="{{ '/events/' | url }}">{{ about.mission_cta }}</a>
   </section>
 </div>

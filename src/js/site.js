@@ -99,7 +99,10 @@
   // Ported verbatim from the old component: same three LCG formulas, same
   // geometry, so the drops fall in the same places at the same speeds.
   function makeRain(el, count, spd) {
-    var imgs = ['/assets/home/mac-1.png', '/assets/home/mac-2.png'];
+    // Prefix-aware so the /preview/ build uses its own copies.
+    var base = (document.querySelector('link[rel=stylesheet]') || {}).href || '';
+    var pre = base.indexOf('/preview/') !== -1 ? '/preview' : '';
+    var imgs = [pre + '/assets/home/mac-1.png', pre + '/assets/home/mac-2.png'];
     var frag = document.createDocumentFragment();
     for (var i = 0; i < count; i++) {
       var s1 = ((i * 9301 + 49297) % 233280) / 233280;
