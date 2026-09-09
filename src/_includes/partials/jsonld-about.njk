@@ -1,0 +1,6 @@
+{%- set people = [] -%}
+{%- for p in about.people -%}
+{%- set people = (people.push({ "@type": "Person", "name": p.name, "jobTitle": p.role, "url": "https://mymostmostest.com/about/" }), people) -%}
+{%- endfor -%}
+{{- { "@context": "https://schema.org", "@type": "AboutPage", "name": "About Us - My Most Mostest",
+      "url": "https://mymostmostest.com/about/", "about": people } | jsonld | safe -}}

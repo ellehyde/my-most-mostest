@@ -41,16 +41,22 @@ gtag('config', '{{ site.analytics.measurementId }}');
 
 <link rel="preload" href="/assets/fonts/fredoka-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/assets/fonts/nunito-latin.woff2" as="font" type="font/woff2" crossorigin>
+<script>
+/* Honours a saved theme choice: localStorage.theme = 'dark' | 'light'.
+   In the head, not at end-of-body, so dark-mode visitors never see a flash of
+   light first. With no saved value the pages follow the OS setting. */
+try{var t=localStorage.getItem('theme');if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t);}catch(e){}
+</script>
 <link rel="stylesheet" href="/css/site.css">
 {% if jsonld %}<script type="application/ld+json">{% include jsonld %}</script>{% endif %}
 </head>
-<body{% if gaLocation %} data-ga-location="{{ gaLocation }}"{% endif %}>
+<body{% if bodyClass %} class="{{ bodyClass }}"{% endif %}{% if gaLocation %} data-ga-location="{{ gaLocation }}"{% endif %}>
 
-{% include "partials/nav.njk" %}
+{% if chrome !== false %}{% include "partials/nav.njk" %}{% endif %}
 
 {{ content | safe }}
 
-{% include "partials/footer.njk" %}
+{% if chrome !== false %}{% include "partials/footer.njk" %}{% endif %}
 
 <script src="/js/site.js" defer></script>
 </body>

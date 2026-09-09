@@ -1,0 +1,100 @@
+---
+layout: layouts/base.njk
+permalink: /events/
+pageTitle: Readings &amp; Events — My Most Mostest
+pageDescription: "Upcoming and past readings for My Most Mostest, the children's picture book by Brie Hollingsworth Krebs and Elle Harting. Request a reading for your school, library, or bookshop."
+canonical: /events/
+ogTitle: Readings &amp; Events — My Most Mostest
+ogDescription: Come say hi in person. Upcoming readings, past events, and how to request a reading for your school, library, or bookshop.
+gaLocation: events
+bodyClass: page-body
+---
+<div class="page">
+  <div class="page-hero">
+    <div class="page-hero-copy">
+      <span class="badge">come say hi</span>
+      <h1 class="h-page">readings &amp; <span class="most">events</span></h1>
+      <p class="intro">
+        storytimes, signings, and the occasional wiggly crowd of two-year-olds. here's where we'll be next,
+        and where we've been.
+      </p>
+    </div>
+    {# width/height match the file so the heading doesn't jump as it loads.
+       onerror hides the figure, same as the portraits on /about/. #}
+    <figure class="page-hero-photo">
+      <img src="/assets/events/events-hero.jpg" width="835" height="1000"
+           alt="Elle Harting holding up a copy of My Most Mostest at a bookshop reading"
+           onerror="this.closest('figure').style.display='none'">
+    </figure>
+  </div>
+
+  <h2 id="upcoming">upcoming</h2>
+  <ul class="events" id="upcomingList">
+    {%- for ev in events %}
+    <li class="event" data-date="{{ ev.date }}"{% if ev.dateText %} data-datetext="{{ ev.dateText }}"{% endif %}{% if ev.order %} data-order="{{ ev.order }}"{% endif %}>
+      {%- if ev.image %}
+      <img src="{{ ev.image }}" alt="{{ ev.title or ev.venue }}" loading="lazy" onerror="this.remove()">
+      {%- endif %}
+      <div class="body">
+        <p class="when" data-when>{{ ev.dateText or ev.date }}</p>
+        {%- if ev.title %}<h3>{{ ev.title }}</h3>{% endif %}
+        <p class="where">{{ ev.venue }}{% if ev.city %} · {{ ev.city }}{% endif %}</p>
+        {%- if ev.blurb %}<p class="blurb">{{ ev.blurb }}</p>{% endif %}
+        {%- if ev.url %}
+        <a class="cta" href="{{ ev.url }}" target="_blank" rel="noopener"{% if not ev.urlIsProductPage %} data-ga-skip{% endif %} data-event-title="{{ ev.title or ev.venue }}">details &amp; directions &rarr;</a>
+        {%- endif %}
+      </div>
+    </li>
+    {%- endfor %}
+  </ul>
+
+  <h2 id="previous">previous</h2>
+  <ul class="events rows" id="previousList"></ul>
+
+  <section class="request" id="request">
+    <h2>want us to do a reading?</h2>
+    <p>
+      schools, libraries, bookshops, story hours, birthday parties with unusually good snacks - we'd love to
+      hear about it. tell us a little and we'll write back with what a visit looks like.
+    </p>
+
+    <div id="reqFormWrap">
+      <form class="req" id="reqForm" novalidate>
+        <label class="full">your name
+          <input type="text" name="name" autocomplete="name" required>
+        </label>
+        <label>email
+          <input type="email" name="email" autocomplete="email" required>
+        </label>
+        <label>phone <span class="optional">(optional)</span>
+          <input type="tel" name="phone" autocomplete="tel">
+        </label>
+        <label>school, library, or shop
+          <input type="text" name="organization" required>
+        </label>
+        <label>city
+          <input type="text" name="city" required>
+        </label>
+        <label class="full">roughly when?
+          <select name="timeframe">
+            <option>not sure yet</option>
+            <option>in the next month</option>
+            <option>in the next few months</option>
+            <option>a specific date (I'll say below)</option>
+          </select>
+        </label>
+        <label class="full">anything else - ages, group size, a date you have in mind
+          <textarea name="message"></textarea>
+        </label>
+        <button type="submit" class="full">send the request</button>
+      </form>
+    </div>
+
+    <div id="reqThanks" hidden>
+      <p class="thanks">thank you - your request is on its way. we'll be in touch soon.</p>
+      <button type="button" class="again" id="reqAgain">send another request</button>
+    </div>
+  </section>
+</div>
+
+<script src="/js/events.js" defer></script>

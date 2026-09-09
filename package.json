@@ -9,7 +9,7 @@
     "start": "eleventy --serve",
     "build": "eleventy",
     "build:preview": "ELEVENTY_ENV=preview eleventy --pathprefix=/preview/",
-    "test": "node test/verify.mjs"
+    "test": "node test/verify-home.mjs && node test/verify-pages.mjs"
   },
   "devDependencies": {
     "@11ty/eleventy": "^3.1.6",

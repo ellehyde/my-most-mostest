@@ -12,6 +12,11 @@ export default function (eleventyConfig) {
   eleventyConfig.addPassthroughCopy({ static: "." });
   eleventyConfig.addPassthroughCopy("assets/fonts");
   eleventyConfig.addPassthroughCopy("assets/stores");
+  // Event photos, including whatever Brie uploads. originals/ is deliberately
+  // excluded - it holds multi-MB camera files that must never be deployed.
+  eleventyConfig.addPassthroughCopy({ "assets/events": "assets/events" }, {
+    filter: (p) => !p.includes("originals"),
+  });
   // The macaroni drops are referenced from JS at runtime, so they need a
   // stable URL rather than a content-hashed one from the image pipeline.
   eleventyConfig.addPassthroughCopy("assets/home/mac-*.png");

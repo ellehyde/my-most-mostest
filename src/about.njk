@@ -1,0 +1,53 @@
+---
+layout: layouts/base.njk
+permalink: /about/
+pageTitle: About Us — My Most Mostest
+pageDescription: "Brie Hollingsworth Krebs and Elle Harting are sisters - the author and illustrator behind My Most Mostest, a picture book about a child's very favorite things."
+canonical: /about/
+ogTitle: About Us — My Most Mostest
+ogDescription: Meet the sisters behind My Most Mostest - Brie Hollingsworth Krebs, author, and Elle Harting, illustrator.
+gaLocation: about
+bodyClass: page-body
+jsonld: partials/jsonld-about.njk
+---
+<div class="page">
+  <span class="badge">{{ about.badge }}</span>
+  <h1 class="h-page">about <span class="most">us</span></h1>
+  <p class="intro intro--about">{{ about.intro }}</p>
+
+  {# missing images degrade gracefully: the figure hides itself, portraits
+     fall back to an initial - the photos are not in the repo yet #}
+  <figure class="about-photo">
+    <img src="{{ about.together_photo }}" alt="{{ about.together_alt }}"
+         onerror="this.closest('figure').style.display='none'">
+    <figcaption>{{ about.together_caption }}</figcaption>
+  </figure>
+
+  <div class="people">
+    {%- for p in about.people %}
+    <article class="person">
+      <div class="portrait" aria-hidden="true">{{ p.initial }}<img src="{{ p.portrait }}" alt="" onerror="this.remove()"></div>
+      <h2>{{ p.name }}</h2>
+      <p class="role">{{ p.role }}</p>
+      <p>{{ p.bio }}</p>
+    </article>
+    {%- endfor %}
+  </div>
+
+  <section class="follow">
+    <div class="follow-copy">
+      <h2>{{ about.follow_heading }}</h2>
+    </div>
+    <a class="ig" href="https://www.instagram.com/{{ site.instagram }}/" target="_blank" rel="noopener"
+       data-network="instagram" data-profile="{{ site.instagram }}">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.1" fill="currentColor" stroke="none"/></svg>
+      @{{ site.instagram }}
+    </a>
+  </section>
+
+  <section class="mission">
+    <h2>{{ about.mission_heading }}</h2>
+    <p>{{ about.mission_body }}</p>
+    <a class="cta" href="/events/">{{ about.mission_cta }}</a>
+  </section>
+</div>
