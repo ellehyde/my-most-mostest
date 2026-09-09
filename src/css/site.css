@@ -626,29 +626,21 @@ form.req button:hover { background: #33508F; }
 }
 
 /* =========================================================================
-   Dark mode - standalone pages only.
+   Light palette only - no dark mode, deliberately.
 
-   /events/, /about/ and /privacy/ have always supported it; the bundled home
-   page never has, and its six illustrations have white and near-black
-   backgrounds baked in, so extending it there is a design decision rather
-   than a port. Scoped to body.page-body so the tokens cannot reach the home
-   page, and written in both forms so an explicit data-theme choice wins in
-   either direction.
+   /events/, /about/ and /privacy/ used to flip to a dark palette on
+   prefers-color-scheme:dark while the home page never did, so a dark-mode
+   visitor went from a cream home page into a dark subpage mid-journey.
+   Decided 2026-09-09: one palette everywhere, matching the book.
+
+   Adding dark mode properly later is a contained job BECAUSE everything reads
+   from the tokens at the top of this file - but it is a design job, not a
+   token swap: the six "peek inside" illustrations have white and near-black
+   backgrounds baked into the images.
+
+   The localStorage theme hook in the layout head is left in place and is now
+   inert, ready if a real toggle is ever built.
    ========================================================================= */
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) body.page-body {
-    --ground: #1A1D28; --surface: #242838; --surface-2: #2E3346;
-    --ink: #F2EFE6; --ink-soft: #A6ABBE; --line: #0E1017; --line-soft: #3C4258;
-    --blue: #8AA2DD; --blue-ink: #A9BCE8; --yellow: #E9C64C; --shadow: #0E1017;
-    --nav-bg: rgba(26, 29, 40, 0.94);
-  }
-}
-:root[data-theme="dark"] body.page-body {
-  --ground: #1A1D28; --surface: #242838; --surface-2: #2E3346;
-  --ink: #F2EFE6; --ink-soft: #A6ABBE; --line: #0E1017; --line-soft: #3C4258;
-  --blue: #8AA2DD; --blue-ink: #A9BCE8; --yellow: #E9C64C; --shadow: #0E1017;
-  --nav-bg: rgba(26, 29, 40, 0.94);
-}
 
 /* ---- /privacy/ : a standalone legal document, no nav or site footer ---- */
 .legal-wrap { max-width: 720px; margin: 0 auto; padding: 32px 22px 72px; }

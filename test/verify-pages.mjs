@@ -139,9 +139,12 @@ console.log('\n--- site-wide ---');
     ok(`${p}: exactly one gtag loader`, (h.match(/googletagmanager\.com\/gtag\/js/g) || []).length === 1);
     ok(`${p}: exactly one gtag config`, (h.match(/gtag\('config'/g) || []).length === 1);
   }
-  ok('dark tokens scoped to .page-body (home cannot inherit them)',
-     read('css/site.css').includes('body.page-body') &&
-     !/:root:not\(\[data-theme="light"\]\) \{/.test(read('css/site.css')));
+  // Light palette only, decided 2026-09-09: the home page never had dark mode,
+  // so dark subpages meant a cream-to-dark jump mid-journey on a dark phone.
+  const css = read('css/site.css');
+  ok('no dark palette anywhere', !css.includes('#1A1D28') && !css.includes('#242838'));
+  ok('no prefers-color-scheme media query', !css.includes('@media (prefers-color-scheme'));
+  ok('no data-theme dark override', !/\[data-theme="dark"\]\s*\{/.test(css));
   for (const f of ['googlea86823cf66158b58.html', 'robots.txt', 'favicon.svg', 'og-cover.jpg', 'cover.jpg', 'CNAME'])
     ok(`static passthrough: ${f}`, fs.existsSync(path.join(SITE, f)));
   ok('4.3 MB event original NOT deployed', !fs.existsSync(path.join(SITE, 'assets/events/originals')));
