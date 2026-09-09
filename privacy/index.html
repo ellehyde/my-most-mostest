@@ -14,23 +14,12 @@
       --ink: #33322E; --ink-soft: #6C6759; --line: #33322E; --line-soft: #DAD3C3;
       --blue: #3E5EA6; --blue-ink: #2C4680; --yellow: #F3C63C; --shadow: #33322E;
     }
-    @media (prefers-color-scheme: dark) {
-      :root {
-        --ground: #1A1D28; --surface: #242838; --surface-2: #2E3346;
-        --ink: #F2EFE6; --ink-soft: #A6ABBE; --line: #0E1017; --line-soft: #3C4258;
-        --blue: #8AA2DD; --blue-ink: #A9BCE8; --yellow: #E9C64C; --shadow: #0E1017;
-      }
-    }
-    :root[data-theme="light"] {
-      --ground: #FBF8F0; --surface: #FFFDF7; --surface-2: #F1ECDF;
-      --ink: #33322E; --ink-soft: #6C6759; --line: #33322E; --line-soft: #DAD3C3;
-      --blue: #3E5EA6; --blue-ink: #2C4680; --yellow: #F3C63C; --shadow: #33322E;
-    }
-    :root[data-theme="dark"] {
-      --ground: #1A1D28; --surface: #242838; --surface-2: #2E3346;
-      --ink: #F2EFE6; --ink-soft: #A6ABBE; --line: #0E1017; --line-soft: #3C4258;
-      --blue: #8AA2DD; --blue-ink: #A9BCE8; --yellow: #E9C64C; --shadow: #0E1017;
-    }
+    /* Light palette only, deliberately. These pages used to flip to a dark
+       palette when the device asked for one, but the home page never did - so a
+       dark-mode visitor went from a cream home page to a dark subpage
+       mid-journey. Decided 2026-09-09: one palette everywhere, matching the
+       book. The localStorage theme hook further down is left in place and is
+       now a no-op, ready if a real toggle is ever built. */
     * { box-sizing: border-box; }
     body {
       margin: 0; background: var(--ground); color: var(--ink);
