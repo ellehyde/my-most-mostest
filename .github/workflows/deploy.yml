@@ -1,0 +1,79 @@
+name: Build and deploy
+
+# Every push to main rebuilds and deploys. Pages CMS commits to main, so an
+# edit by Brie or Elle lands live about 60-120s after they hit Save.
+#
+# A push to `preview` (if that branch exists) is additionally built into
+# /preview/ with noindex, which is the staging path the site has always used.
+on:
+  push:
+    branches: [main, preview]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Never let two deploys race; a queued one supersedes the one in flight.
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          # Full history: the sitemap's lastmod comes from git log, and a
+          # shallow clone would report every page as changed on every build.
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Cache generated images
+        uses: actions/cache@v4
+        with:
+          path: .cache
+          key: eleventy-img-${{ hashFiles('assets/**') }}
+          restore-keys: eleventy-img-
+
+      - run: npm ci
+
+      - name: Build
+        run: npx @11ty/eleventy
+
+      - name: Build the preview branch into /preview/
+        run: |
+          if git ls-remote --exit-code --heads origin preview >/dev/null 2>&1; then
+            echo "preview branch found - building it"
+            git clone --depth 1 -b preview "https://github.com/${GITHUB_REPOSITORY}.git" ../preview-src
+            (cd ../preview-src && npm ci && ELEVENTY_ENV=preview npx @11ty/eleventy --pathprefix=/preview/)
+            mkdir -p _site/preview && cp -R ../preview-src/_site/. _site/preview/
+          else
+            echo "no preview branch - skipping"
+          fi
+
+      # Gate: a broken build never reaches production. Content edits cannot
+      # fail this (templates never throw on content), so in practice this
+      # catches code changes, not anything Brie does.
+      - name: Verify
+        run: npm test
+
+      - uses: actions/upload-pages-artifact@v3
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

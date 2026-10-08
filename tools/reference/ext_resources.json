@@ -1,0 +1,18 @@
+[
+  {
+    "id": "macA",
+    "uuid": "442b389c-8abf-4748-bed9-36cbe7b4afac"
+  },
+  {
+    "id": "macB",
+    "uuid": "f82c4b36-11f9-4b65-b9c5-a311140d00e7"
+  },
+  {
+    "id": "https://unpkg.com/react@18.3.1/umd/react.production.min.js",
+    "uuid": "ca320ea0-3928-4468-96d6-04d7a27a5d44"
+  },
+  {
+    "id": "https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js",
+    "uuid": "03ab166c-1363-40a6-9288-abbb92dccaaf"
+  }
+]

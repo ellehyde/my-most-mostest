@@ -1,0 +1,27 @@
+{
+  "badge": "the two of us",
+  "intro": "Brie Hollingsworth Krebs and Elle Harting are sisters. together they grew up in the Arizona desert, laughing and giggling at wild things and fantastical dreams.",
+  "together_photo": "/assets/about/together.jpg",
+  "together_alt": "Brie Hollingsworth Krebs and Elle Harting",
+  "together_caption": "Brie and Elle - sisters, and the two halves of this book.",
+  "people": [
+    {
+      "name": "Brie Hollingsworth Krebs",
+      "role": "author",
+      "bio": "mom and fitness guru, writing in Charlotte, NC. living vicariously through her little kid's silliness.",
+      "portrait": "/assets/about/brie.jpg",
+      "initial": "B"
+    },
+    {
+      "name": "Elle Harting",
+      "role": "illustrator",
+      "bio": "mom and product manager, doodling in Poulsbo, WA. Elle's kid is living vicariously through mom's silliness.",
+      "portrait": "/assets/about/elle.jpg",
+      "initial": "E"
+    }
+  ],
+  "follow_heading": "follow along",
+  "mission_heading": "what we're doing",
+  "mission_body": "there is more coming, and we read wherever they will have us. come find us at a bookshop or a library near you.",
+  "mission_cta": "come to a reading →"
+}
