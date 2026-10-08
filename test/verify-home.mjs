@@ -37,6 +37,9 @@ const expect=[['#navCta','Amazon','retail','header'],
               ['#buy a.btn--primary','Amazon','retail','hero'],
               ['#direct a.btn--paper','IngramSpark (direct)','direct','direct'],
               ['#signed a.btn','Saltwater Bookshop','local','signed'],
+              // the bug this change fixes: a shop in site.json with no HOSTS entry
+              // fires NO event at all, silently, and no existing test notices.
+              ['#signed .shop-card:nth-child(3) a.btn','Quill & Quest Bookstore','local','signed'],
               ['#retailers a.pill','Amazon','retail','retailers']];
 for(const [sel,retailer,channel,loc] of expect){
   calls.length=0; const el=d.querySelector(sel);
@@ -48,7 +51,7 @@ for(const [sel,retailer,channel,loc] of expect){
      ev?JSON.stringify({r:ev[2].retailer,c:ev[2].channel,l:ev[2].location}):'no event');
 }
 // all 7 hosts reachable in the table
-for(const h of ['amazon','barnesandnoble','bookshop.org','walmart','ingramspark','saltwaterbookshop','eagleharborbooks'])
+for(const h of ['amazon','barnesandnoble','bookshop.org','walmart','ingramspark','saltwaterbookshop','eagleharborbooks','shopquillandquest'])
   ok(`host table has ${h}`, read('index.html').includes(h));
 
 console.log('\n--- forms ---');
@@ -96,11 +99,29 @@ ok('audience 2-7', ld.audience.suggestedMinAge===2 && ld.audience.suggestedMaxAg
 console.log('\n--- copy guards (carried over) ---');
 const text=d.body.textContent;
 ok('no "special edition" claim', !/special edition/i.test(text));
-ok('scarcity stated once', (text.match(/limited/gi)||[]).length===1);
+// Was: "limited" appears exactly once, sourced from the old signed-copies badge.
+// That badge is gone (the section is about shops now, not scarcity), so the guard
+// is re-expressed as its actual intent: no urgency language in the prose at all.
+ok('no scarcity language', !/\blimited\b|while supplies last|hurry|act fast/i.test(text),
+   (text.match(/\blimited\b|while supplies last|hurry|act fast/gi)||[]).join(', '));
 ok('no em-dashes in body copy', !text.includes('—'));
 ok('no heart emojis', !/\u{1F49B}/u.test(html));
 
 console.log('\n--- weight ---');
+// the signed flag lives in site.json and the tag is rendered from it; this keeps
+// the two from drifting when someone flips it in the CMS
+const siteData=JSON.parse(fs.readFileSync('content/site.json','utf8'));
+const wantSigned=siteData.book.shops.filter(s=>s.signed).length;
+ok(`signed tags match data (${wantSigned})`,
+   d.querySelectorAll('#signed .shop-signed').length===wantSigned,
+   `rendered ${d.querySelectorAll('#signed .shop-signed').length}`);
+ok('every shop card has a buy button',
+   d.querySelectorAll('#signed .shop-card').length===siteData.book.shops.length &&
+   d.querySelectorAll('#signed .shop-card a.btn').length===siteData.book.shops.length);
+ok('buy buttons are per-shop (GA link_text can tell them apart)',
+   new Set([...d.querySelectorAll('#signed .shop-card a.btn')].map(a=>a.textContent.trim())).size
+     === siteData.book.shops.length);
+
 ok('index.html under 100 KB', Buffer.byteLength(html)<100*1024, (Buffer.byteLength(html)/1024).toFixed(1)+' KB');
 
 console.log('\n'+(fail?'FAILED':'ALL PASS')+` - ${pass} passed, ${fail} failed\n`);

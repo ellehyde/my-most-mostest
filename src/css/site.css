@@ -311,6 +311,9 @@ h1, h2, h3 { font-family: var(--font-display); font-weight: 600; }
 }
 
 /* ---- signed-copy cards ------------------------------------------------- */
+/* Scoped to #signed, not .body-copy globally: text-wrap:pretty changes where the
+   last lines break, and #direct's geometry is verified against production. */
+#signed .body-copy { text-wrap: pretty; }
 .shop-cards { display: flex; flex-wrap: wrap; justify-content: center; gap: 22px; }
 .shop-card {
   flex: 1 1 300px; max-width: 390px; display: flex; flex-direction: column;
@@ -318,8 +321,21 @@ h1, h2, h3 { font-family: var(--font-display); font-weight: 600; }
   border: 2px solid var(--line); border-radius: var(--radius-card);
   box-shadow: 5px 5px 0 var(--shadow); padding: 28px 24px;
 }
-.shop-logo { height: 140px; display: flex; align-items: center; justify-content: center; }
-.shop-logo img { max-height: 140px; width: auto; height: auto; display: block; }
+/* One box, three very different logo shapes (1:1, 1.27:1 and a 3.3:1 banner).
+   The box height caps the tall ones; the per-shop logoMaxWidth in site.json caps
+   the wide ones - without it the 300x90 banner renders 467px wide and overflows
+   the card. At 120px the three land within 1.27x optical area of each other. */
+.shop-logo { height: 120px; display: flex; align-items: center; justify-content: center; }
+.shop-logo img { max-height: 120px; max-width: 100%; width: auto; height: auto; display: block; }
+/* Quiet marker - signed copies are a per-shop fact now, not the section's premise,
+   so this must read as a footnote and never compete with the buy button. */
+.shop-signed {
+  display: inline-flex; align-items: center; gap: 6px; font-family: var(--font-body);
+  font-weight: 700; font-size: 13px; letter-spacing: .02em; color: var(--ink-quiet);
+  background: var(--surface-2); border: 1.5px solid var(--line-soft);
+  border-radius: var(--radius-pill); padding: 4px 12px; margin-top: -4px;
+}
+.shop-signed::before { content: "\270E"; font-size: 13px; line-height: 1; }
 .shop-name {
   font-family: var(--font-display); font-weight: 600; font-size: 20px;
   color: var(--ink); text-align: center; line-height: 1.25;

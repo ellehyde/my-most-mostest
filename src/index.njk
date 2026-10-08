@@ -99,9 +99,15 @@ ogDescription: A joyful rhyming picture book celebrating a child's very favorite
   </div>
 </section>
 
+{# id="signed" is now a legacy name - this section is about indie bookshops that
+   stock the book, not about signed copies, which are a per-shop detail. DO NOT
+   rename the id: GA4 reads its `location` dimension straight off this attribute
+   (see locFor() in src/js/analytics.js), so renaming it silently re-buckets every
+   click and splits the reporting history in two. #}
 <section id="signed" class="section section--sand rule-top" style="padding:clamp(48px,6.5vw,76px) clamp(18px,5vw,64px)">
   <div class="wrap wrap--narrow center">
-    <div class="badge badge--right badge--tight">{{ home.signed.badge }}</div>
+    {# the count comes from the data, so adding a shop in the CMS updates the badge #}
+    <div class="badge badge--right badge--tight">{{ home.signed.badge | replace("{n}", site.book.shops.length) }}</div>
     <h2 class="h-small">{{ home.signed.heading }}</h2>
     <p class="body-copy" style="color:var(--ink-quiet);margin:0 auto 8px;max-width:620px">{{ home.signed.body }}</p>
     <p class="body-copy" style="color:var(--ink-quiet);margin:0 auto 34px;max-width:620px">{{ home.signed.shipping_line }}</p>
@@ -112,7 +118,10 @@ ogDescription: A joyful rhyming picture book celebrating a child's very favorite
           <img src="{{ shop.logo | url }}" alt="{{ shop.name }}" loading="lazy" style="max-width:{{ shop.logoMaxWidth }}">
         </div>
         <div class="shop-name">{{ shop.name }}<br><span class="shop-city">{{ shop.city }}</span></div>
-        <a class="btn btn--primary btn--sm" href="{{ shop.url }}" target="_blank" rel="noopener">{{ home.signed.button }}</a>
+        {% if shop.signed %}<span class="shop-signed">{{ home.signed.signed_tag }}</span>{% endif %}
+        {# per-shop button text, so GA4's link_text can tell the shops apart - it
+           used to be the same string on every card, making that report useless #}
+        <a class="btn btn--primary btn--sm" href="{{ shop.url }}" target="_blank" rel="noopener">{{ home.signed.button | replace("{shop}", shop.shortName) }}</a>
       </div>
       {% endfor %}
     </div>
