@@ -47,14 +47,27 @@
         "city": "Kingston, WA",
         "url": "https://www.saltwaterbookshop.com/item/YZZx9elY01IAMdyeLygezQ",
         "logo": "/assets/stores/saltwater.png",
-        "logoMaxWidth": "240px"
+        "logoMaxWidth": "240px",
+        "shortName": "Saltwater",
+        "signed": true
       },
       {
         "name": "Eagle Harbor Book Co.",
         "city": "Bainbridge Island, WA",
         "url": "https://www.eagleharborbooks.com/item/YZZx9elY01IAMdyeLygezQ",
         "logo": "/assets/stores/eagle-harbor.png",
-        "logoMaxWidth": "230px"
+        "logoMaxWidth": "230px",
+        "shortName": "Eagle Harbor",
+        "signed": true
+      },
+      {
+        "name": "Quill & Quest Bookstore",
+        "shortName": "Quill & Quest",
+        "city": "Farmington, NM",
+        "url": "https://shopquillandquest.com/book/9798295863806",
+        "logo": "/assets/stores/quill-and-quest.png",
+        "logoMaxWidth": "230px",
+        "signed": false
       }
     ]
   },

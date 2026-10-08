@@ -12,6 +12,10 @@
    retailers hello) are GA4 dimensions: `location` is derived from them, so
    renaming one silently breaks the "Direct vs retail" report. */
 (function () {
+  // KEEP IN STEP WITH content/site.json book.shops. This table is hand-maintained
+  // and nothing generates it from the data, so a shop added to site.json without an
+  // entry here ships a buy button that fires NO event at all - silently, and without
+  // failing any test that only asserts the shops it already knows about.
   var HOSTS = [
     { re: /(^|\.)amazon\./i,             name: 'Amazon',                channel: 'retail' },
     { re: /(^|\.)barnesandnoble\./i,     name: 'Barnes & Noble',        channel: 'retail' },
@@ -19,7 +23,8 @@
     { re: /(^|\.)walmart\./i,            name: 'Walmart',               channel: 'retail' },
     { re: /(^|\.)ingramspark\./i,        name: 'IngramSpark (direct)',  channel: 'direct' },
     { re: /(^|\.)saltwaterbookshop\./i,  name: 'Saltwater Bookshop',    channel: 'local'  },
-    { re: /(^|\.)eagleharborbooks\./i,   name: 'Eagle Harbor Book Co.', channel: 'local'  }
+    { re: /(^|\.)eagleharborbooks\./i,   name: 'Eagle Harbor Book Co.', channel: 'local'  },
+    { re: /(^|\.)shopquillandquest\./i,  name: 'Quill & Quest Bookstore', channel: 'local' }
   ];
 
   function retailerFor(h) {

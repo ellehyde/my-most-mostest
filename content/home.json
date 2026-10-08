@@ -22,12 +22,42 @@
     "heading": "peek inside",
     "intro": "a little peek at the mostest things inside. go on, poke around.",
     "images": [
-      { "image": "/assets/home/favorites-01.png", "alt": "I could soar, I could roar on the highest swing", "tilt": "-2.5deg", "fit": "contain" },
-      { "image": "/assets/home/favorites-02.png", "alt": "then donkey rides on my bicycle", "tilt": "2deg", "fit": "contain" },
-      { "image": "/assets/home/favorites-03.png", "alt": "I could race in space on rocket ships with my wings", "tilt": "-1.5deg", "fit": "cover" },
-      { "image": "/assets/home/favorites-04.png", "alt": "snuggly lovin' on my lovey", "tilt": "2.5deg", "fit": "contain" },
-      { "image": "/assets/home/favorites-05.png", "alt": "silly and free outdoor pee pee", "tilt": "-2deg", "fit": "contain" },
-      { "image": "/assets/home/favorites-06.png", "alt": "because I looove getting messy and muddy", "tilt": "2deg", "fit": "contain" }
+      {
+        "image": "/assets/home/favorites-01.png",
+        "alt": "I could soar, I could roar on the highest swing",
+        "tilt": "-2.5deg",
+        "fit": "contain"
+      },
+      {
+        "image": "/assets/home/favorites-02.png",
+        "alt": "then donkey rides on my bicycle",
+        "tilt": "2deg",
+        "fit": "contain"
+      },
+      {
+        "image": "/assets/home/favorites-03.png",
+        "alt": "I could race in space on rocket ships with my wings",
+        "tilt": "-1.5deg",
+        "fit": "cover"
+      },
+      {
+        "image": "/assets/home/favorites-04.png",
+        "alt": "snuggly lovin' on my lovey",
+        "tilt": "2.5deg",
+        "fit": "contain"
+      },
+      {
+        "image": "/assets/home/favorites-05.png",
+        "alt": "silly and free outdoor pee pee",
+        "tilt": "-2deg",
+        "fit": "contain"
+      },
+      {
+        "image": "/assets/home/favorites-06.png",
+        "alt": "because I looove getting messy and muddy",
+        "tilt": "2deg",
+        "fit": "contain"
+      }
     ]
   },
   "comesayhi": {
@@ -43,11 +73,12 @@
     "footnote": "prefer one click? the usual shops are just below - a copy from anywhere is still a copy read at bedtime."
   },
   "signed": {
-    "badge": "limited",
-    "heading": "signed copies, on a real shelf",
-    "body": "we signed a stack at each of these shops when we read to little kids. support an independent bookshop, get a copy with a scribble.",
-    "shipping_line": "not nearby? they ship!",
-    "button": "buy a signed copy →"
+    "badge": "now in {n} shops",
+    "heading": "find us in the wild",
+    "body": "washington to new mexico, on actual wooden shelves. every shop here gave a first picture book a chance - if yours isn't on the list, ask them for us.",
+    "shipping_line": "not nearby? they all ship.",
+    "button": "buy from {shop} →",
+    "signed_tag": "signed copies"
   },
   "retailers": {
     "heading": "also available at these very fine retailers, for your convenience"

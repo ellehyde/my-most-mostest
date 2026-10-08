@@ -22,6 +22,13 @@ media:
     categories: [image]
     extensions: [jpg, jpeg, png, webp]
     rename: safe
+  - name: stores
+    label: Bookshop logos
+    input: assets/stores
+    output: /assets/stores
+    categories: [image]
+    extensions: [jpg, jpeg, png, webp]
+    rename: safe
   - name: about
     label: About page photos
     input: assets/about
@@ -254,15 +261,32 @@ content:
               - { name: url, type: string }
               - { name: dot, label: "Dot colour, e.g. #FF9900", type: string }
           - name: shops
-            label: Signed-copy bookshops
+            label: Indie bookshops that stock us
+            description: >-
+              Shops with the book on a real shelf. The badge count on the page updates
+              itself from this list.
             type: object
             list: true
             fields:
-              - { name: name, type: string }
-              - { name: city, type: string }
-              - { name: url, type: string }
-              - { name: logo, type: image, options: { media: home } }
-              - { name: logoMaxWidth, label: "Logo max width, e.g. 240px", type: string }
+              - { name: name, label: Shop name (shown on the card), type: string }
+              - name: shortName
+                label: Short name (used on the button)
+                type: string
+                description: 'e.g. "Saltwater" gives a button reading "buy from Saltwater".'
+              - { name: city, label: City, state, type: string }
+              - { name: url, label: Link to the book on their site, type: string }
+              - { name: logo, type: image, options: { media: stores } }
+              - name: logoMaxWidth
+                label: "Logo max width, e.g. 230px"
+                type: string
+                description: >-
+                  Only matters for wide/banner logos. Tall or square logos are capped by
+                  the box height instead, so this does nothing for them.
+              - name: signed
+                label: This shop has signed copies
+                type: boolean
+                default: false
+                description: Adds a small "signed copies" tag to this shop's card.
       - { name: instagram, label: Instagram handle (no @), type: string }
       - { name: email, label: Contact email, type: string, readonly: true }
       - { name: copyrightYear, label: Footer copyright year, type: string }
