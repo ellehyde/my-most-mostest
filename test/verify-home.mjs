@@ -1,7 +1,13 @@
 process.env.TZ='America/Los_Angeles';
 import fs from 'node:fs';
+import path from 'node:path';
 import { JSDOM } from 'jsdom';
-const html = fs.readFileSync('/Users/bluemac/Desktop/Claude Projects/my-most-mostest-repo/_site/index.html','utf8');
+
+// Resolve against the repo root, never an absolute local path - CI has a
+// different checkout directory and a hard-coded one fails there only.
+const SITE = path.resolve('_site');
+const read = (p) => fs.readFileSync(path.join(SITE, p), 'utf8');
+const html = read('index.html');
 let pass=0,fail=0;
 const ok=(n,c,e)=>{c?(pass++,console.log('  PASS  '+n)):(fail++,console.log('  FAIL  '+n+(e?'  -> '+e:'')));};
 
@@ -10,7 +16,7 @@ const dom=new JSDOM(html,{runScripts:'dangerously',url:'https://mymostmostest.co
 const w=dom.window, d=w.document;
 // site.js is deferred; jsdom with runScripts should execute it, but it is loaded
 // from /js/site.js which jsdom will not fetch. Execute it manually.
-const siteJs=fs.readFileSync('/Users/bluemac/Desktop/Claude Projects/my-most-mostest-repo/_site/js/site.js','utf8');
+const siteJs=read('js/site.js');
 w.eval(siteJs);
 
 console.log('\n--- structure ---');
@@ -43,7 +49,7 @@ for(const [sel,retailer,channel,loc] of expect){
 }
 // all 7 hosts reachable in the table
 for(const h of ['amazon','barnesandnoble','bookshop.org','walmart','ingramspark','saltwaterbookshop','eagleharborbooks'])
-  ok(`host table has ${h}`, fs.readFileSync('/Users/bluemac/Desktop/Claude Projects/my-most-mostest-repo/_site/index.html','utf8').includes(h));
+  ok(`host table has ${h}`, read('index.html').includes(h));
 
 console.log('\n--- forms ---');
 const contact=d.querySelector('[data-form="contact"]');
